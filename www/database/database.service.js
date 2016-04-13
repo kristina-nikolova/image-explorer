@@ -18,6 +18,7 @@
 
         service.crateAlbumTable = crateAlbumTable;
         service.insertAlbum = insertAlbum;
+        service.updateAlbum = updateAlbum;
         service.deleteAlbumById = deleteAlbumById;
         service.selectAlbumById = selectAlbumById;
         service.selectAllAlbums = selectAllAlbums;
@@ -55,6 +56,17 @@
 
                         //dashboards data
                         $rootScope.albumsCount += 1;
+                    }, function (err) {
+                        $rootScope.$broadcast('error', err);
+                    });
+            });
+        }
+
+        function updateAlbum(album) {
+            service.db.transaction(function (tx) {
+                tx.executeSql('UPDATE album SET name=?, description=? WHERE id=?', [album.name, album.description, album.id],
+                    function(tx, res) {
+                        $rootScope.$broadcast('success', 'Successful edited album');
                     }, function (err) {
                         $rootScope.$broadcast('error', err);
                     });

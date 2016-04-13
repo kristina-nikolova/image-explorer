@@ -9,7 +9,8 @@
     function AlbumsCtrl ($rootScope, $scope, $timeout, $ionicModal, DatabaseService) {
 
         $scope.isAlbumCreated = false;
-        $scope.editModeOn = false;
+        $scope.isAlbumInDeleteMode = false;
+        $scope.isAlbumInEditMode = false;
         $scope.newAlbum = {
             name: "",
             description: ""
@@ -19,7 +20,7 @@
             $scope.albums = DatabaseService.albums;
 
             $ionicModal.fromTemplateUrl('views/albums/create-album.modal.template.html', function(modal) {
-                $scope.createAlbumModal = modal;
+                $scope.createEditAlbumModal = modal;
             }, {
                 scope: $scope
             });
@@ -27,8 +28,8 @@
 
         //TODO: use in one place for edit album/photo!
         $rootScope.$on('state:changed', function(){
-            if($scope.editModeOn) {
-                $scope.exitFromEditMode();
+            if($scope.isAlbumInDeleteMode) {
+                $scope.exitFromDeleteMode();
             }
         });
 
@@ -38,27 +39,37 @@
             $scope.$applyAsync();
         });
 
-        function resetCreateAlbumModal() {
+        function resetCreateEditAlbumModal() {
             $scope.newAlbum = {
                 name: "",
                 description: ""
             }
         };
 
-        $scope.openCreateAlbumModal = function() {
-            $scope.createAlbumModal.show();
+        $scope.openCreateEditAlbumModal = function(album) {
+            $scope.album = album;
+            $scope.createEditAlbumModal.show();
         };
 
-        $scope.closeCreateAlbumModal = function() {
-            $scope.createAlbumModal.hide();
-            resetCreateAlbumModal();
+        $scope.closeCreateEditAlbumModal = function() {
+            $scope.createEditAlbumModal.hide();
+            resetCreateEditAlbumModal();
         };
 
         $scope.createAlbum = function(newAlbum) {
             DatabaseService.insertAlbum(newAlbum);
 
             $timeout(function(){
-                $scope.closeCreateAlbumModal();
+                $scope.closeCreateEditAlbumModal();
+            }, 1000);
+        };
+
+        $scope.editAlbum = function(album) {
+            DatabaseService.updateAlbum(album);
+            $scope.isAlbumInEditMode = false;
+
+            $timeout(function(){
+                $scope.closeCreateEditAlbumModal();
             }, 1000);
         };
 
@@ -67,11 +78,16 @@
         };
 
         $scope.enterInEditMode = function(){
-            $scope.editModeOn = true;
+            $scope.isAlbumInEditMode = true;
         }
 
-        $scope.exitFromEditMode = function(){
-            $scope.editModeOn = false;
+        $scope.enterInDeleteMode = function(){
+            $scope.isAlbumInDeleteMode = true;
+        }
+
+        $scope.exitFromEditDeleteMode = function(){
+            $scope.isAlbumInDeleteMode = false;
+            $scope.isAlbumInEditMode = false;
         }
 
         init();

@@ -2,25 +2,49 @@
 
     <!-- Modal header bar -->
     <ion-header-bar class="bar-secondary">
-        <h1 class="title">Create Album</h1>
+        <h1 class="title"
+            ng-if="!isAlbumInEditMode">Create Album</h1>
+        <h1 class="title"
+            ng-if="isAlbumInEditMode">Edit Album</h1>
         <button class="button button-clear button-positive"
-                ng-click="closeCreateAlbumModal()">Cancel</button>
+                ng-click="closeCreateEditAlbumModal()">Cancel</button>
     </ion-header-bar>
 
     <!-- Modal content area -->
     <ion-content>
 
-        <form ng-submit="createAlbum(newAlbum)">
+        <form>
             <div class="list">
                 <label class="item item-input">
-                    <input type="text" placeholder="Name" ng-model="newAlbum.name">
+                    <input type="text"
+                           placeholder="Name"
+                           ng-model="newAlbum.name"
+                           ng-if="!isAlbumInEditMode">
+                    <input type="text"
+                           placeholder="Name"
+                           ng-model="album.name"
+                           ng-if="isAlbumInEditMode">
                 </label>
                 <label class="item item-input">
-                    <input type="text" placeholder="Description" ng-model="newAlbum.description">
+                    <input type="text"
+                           placeholder="Description"
+                           ng-model="newAlbum.description"
+                           ng-if="!isAlbumInEditMode">
+                    <input type="text"
+                           placeholder="Description"
+                           ng-model="album.description"
+                           ng-if="isAlbumInEditMode">
                 </label>
             </div>
             <div class="padding">
-                <button type="submit" class="button button-block button-positive">Create Album</button>
+                <button type="submit"
+                        class="button button-block button-positive"
+                        ng-if="!isAlbumInEditMode"
+                        ng-click="createAlbum(newAlbum)">Create Album</button>
+                <button type="submit"
+                        class="button button-block button-positive"
+                        ng-if="isAlbumInEditMode"
+                        ng-click="editAlbum(album)">Save</button>
             </div>
         </form>
 
