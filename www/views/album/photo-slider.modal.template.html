@@ -1,6 +1,5 @@
 <div class="modal">
 
-    <!-- Modal content area -->
     <ion-content>
 
         <button class="button button-icon slider-btn"
@@ -11,16 +10,6 @@
                 ng-click="closeFileSliderModal()">
             <i class="icon ion-close light"></i>
         </button>
-
-        <!--<ion-slide-box show-pager="false"-->
-                       <!--does-continue="false"-->
-                       <!--active-slide="currentSlideIndex"-->
-                       <!--on-slide-changed="slideHasChanged($index)">-->
-            <!--<ion-slide ng-repeat="file in files">-->
-                <!--<h1 class="title">{{file.name}}</h1>-->
-                <!--<img ng-src="{{file.url}}" class="photo-fullsize" alt="photo-fullscreen" />-->
-            <!--</ion-slide>-->
-        <!--</ion-slide-box>-->
 
         <ion-slide-box show-pager="false"
                        does-continue="false"
@@ -34,7 +23,7 @@
                             scrollbar-x="false"
                             scrollbar-y="false"
                             overflow-scroll="false"
-                            class="zoom-area"
+                            class="w-h-100"
                             delegate-handle="scrollHandle{{$index}}"
                             on-scroll="updateSlideStatus(currentSlideIndex)"
                             on-release="updateSlideStatus(currentSlideIndex)">

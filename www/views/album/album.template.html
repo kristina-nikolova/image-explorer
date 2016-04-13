@@ -21,38 +21,22 @@
               ng-if="editModeOn">Exit
       </button>
 
-      <!--<ion-list>-->
-          <!--<ion-item ng-repeat="file in files" class="p-0">-->
-              <!--<button class="button button-icon right action-button"-->
-                      <!--ng-click="deleteFile(file)"-->
-                      <!--ng-if="editModeOn">-->
-                  <!--<i class="icon ion-android-remove-circle assertive"></i>-->
-              <!--</button>-->
-              <!--<div class="albums-list-item"-->
-                   <!--ng-class="{ 'not-clickable left' : editModeOn }">-->
-                  <!--<div class="list" ng-click="openFileSliderModal(file, files)">-->
-                      <!--<a class="item item-thumbnail-left border-0" href="#">-->
-                          <!--<img ng-src="{{file.url}}" alt="photo-img" />-->
-                          <!--<h2>{{file.name}}</h2>-->
-                          <!--<p>{{file.note}}</p>-->
-                      <!--</a>-->
-                  <!--</div>-->
-              <!--</div>-->
-          <!--</ion-item>-->
-      <!--</ion-list>-->
       <div class="clear"></div>
       <div class="card album"
            ng-repeat="file in files"
-           ng-class="{ 'not-clickable' : editModeOn }"
-           ng-click="openFileSliderModal(file, files)">
+           ng-class="{ 'not-clickable' : editModeOn }">
           <button class="button button-icon delete-button"
                   ng-click="deleteFile(file)"
                   ng-if="editModeOn">
               <i class="icon ion-android-remove-circle assertive"></i>
           </button>
-          <div class="item item-image" style="background-image: url({{file.url}})"></div>
-          <div class="item item-divider center">
-              <h2>{{file.name}}</h2>
+          <div class="w-h-100"
+               ng-click="openFileSliderModal(file, files)">
+              <div class="item item-image"
+                   style="background-image: url({{file.url}})"></div>
+              <div class="item item-divider center">
+                  <h2>{{file.name}}</h2>
+              </div>
           </div>
       </div>
 
