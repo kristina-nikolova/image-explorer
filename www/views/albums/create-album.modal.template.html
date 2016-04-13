@@ -1,0 +1,29 @@
+<div class="modal">
+
+    <!-- Modal header bar -->
+    <ion-header-bar class="bar-secondary">
+        <h1 class="title">Create Album</h1>
+        <button class="button button-clear button-positive"
+                ng-click="closeCreateAlbumModal()">Cancel</button>
+    </ion-header-bar>
+
+    <!-- Modal content area -->
+    <ion-content>
+
+        <form ng-submit="createAlbum(newAlbum)">
+            <div class="list">
+                <label class="item item-input">
+                    <input type="text" placeholder="Name" ng-model="newAlbum.name">
+                </label>
+                <label class="item item-input">
+                    <input type="text" placeholder="Description" ng-model="newAlbum.description">
+                </label>
+            </div>
+            <div class="padding">
+                <button type="submit" class="button button-block button-positive">Create Album</button>
+            </div>
+        </form>
+
+    </ion-content>
+
+</div>

@@ -1,0 +1,39 @@
+<div class="modal">
+
+    <!-- Modal header bar -->
+    <ion-header-bar class="bar-secondary">
+        <h1 class="title">Photo Info</h1>
+        <button class="button button-clear button-positive"
+                ng-click="closePhotoInfoModal()">Cancel</button>
+    </ion-header-bar>
+
+    <!-- Modal content area -->
+    <ion-content>
+
+        <!--TODO: Replace file/image to photo EVERYWHERE!-->
+        <div class="list">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label bold">Name</span>
+                <div>{{file.name}}</div>
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label bold">Location</span>
+                <div>{{file.location}}</div>
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label bold">Date/Time</span>
+                <div>{{file.dateCreated | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label bold">Note</span>
+                <div>{{file.note}}</div>
+            </label>
+        </div>
+
+        <button ng-click="sharePhoto()" class="button button-icon icon ion-email">
+            Share
+        </button>
+
+    </ion-content>
+
+</div>

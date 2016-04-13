@@ -1,0 +1,31 @@
+<ion-view view-title="Dashboard">
+  <ion-content class="padding">
+      <error-msg message="error"
+                 ng-if="error">
+      </error-msg>
+    <div class="list card">
+      <div class="item item-divider">Albums</div>
+      <div class="item item-body">
+        <div>
+          You have <b>{{albumsCount}}</b> albums
+        </div>
+      </div>
+    </div>
+    <div class="list card">
+      <div class="item item-divider">Images</div>
+      <div class="item item-body">
+        <div>
+          You have <b>{{allFilesCount}}</b> images!
+        </div>
+      </div>
+    </div>
+    <div class="list card">
+      <div class="item item-divider">Notes</div>
+      <div class="item item-body">
+        <div>
+          You have <b>{{notesCount}}</b> notes.
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

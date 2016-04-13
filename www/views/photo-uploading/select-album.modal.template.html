@@ -1,0 +1,33 @@
+<div class="modal">
+
+    <!-- Modal header bar -->
+    <ion-header-bar class="bar-secondary">
+        <h1 class="title">Select Album</h1>
+        <button class="button button-clear button-positive"
+                ng-click="closeSelectAlbumModal()">Cancel</button>
+    </ion-header-bar>
+
+    <!-- Modal content area -->
+    <ion-content>
+
+        <form name="form" id="form" ng-submit="addPhotoToAlbum(file, albums)">
+                <ion-list>
+                    <ion-item ng-repeat="album in albums" class="p-0">
+                        <ion-checkbox ng-model="album.isSelected">
+                            <h2>{{album.name}}</h2>
+                            <p>{{album.description}}</p>
+                        </ion-checkbox>
+                    </ion-item>
+                </ion-list>
+            <!--</div>-->
+            <div class="padding">
+                <button type="submit" class="button button-block button-positive">Save</button>
+            </div>
+        </form>
+
+    </ion-content>
+
+</div>
+
+
+

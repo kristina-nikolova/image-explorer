@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src  'self' 'unsafe-inline' *">
+
+      <title>Image Explorer</title>
+
+    <!-- lib's js -->
+    <link href="assets/css/ionic.app.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+
+    <script src="assets/lib/ionic/js/ionic.bundle.js"></script>
+    <script src="assets/lib/ng-cordova.min.js"></script>
+    <script src="cordova.js"></script>
+    <script src="assets/lib/exif.js"></script>
+
+    <!-- custom js -->
+    <script src="main/app.js"></script>
+
+    <script src="common/directives/error-msg.directive.js"></script>
+    <script src="common/directives/success-msg.directive.js"></script>
+
+    <script src="main/main.controller.js"></script>
+    <script src="views/photo-uploading/photo.controller.js"></script>
+    <script src="views/photo-uploading/photo-details.controller.js"></script>
+    <script src="views/album/album.controller.js"></script>
+    <script src="views/albums/albums.controller.js"></script>
+    <script src="views/dashboard/dashboard.controller.js"></script>
+    <script src="views/settings/settings.controller.js"></script>
+
+    <script src="views/settings/settings.service.js"></script>
+    <script src="views/album/album.service.js"></script>
+    <script src="views/albums/albums.service.js"></script>
+    <script src="views/photo-uploading/photo.service.js"></script>
+    <script src="common/services/camera.service.js"></script>
+    <script src="common/services/photo-location.service.js"></script>
+    <script src="database/database.service.js"></script>
+  </head>
+  <body ng-app="imageExplorer">
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-nav-view></ion-nav-view>
+  </body>
+</html>

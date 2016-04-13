@@ -1,0 +1,30 @@
+<ion-view view-title="Photo Details">
+  <ion-content class="padding">
+      <div class="photo-wrap">
+          <img ng-src="{{file.url}}" alt="photo" />
+          <label class="item item-input mtb-11">
+              <input type="text"
+                     placeholder="File Name"
+                     ng-model="file.name">
+          </label>
+          <label class="item item-input mtb-11"
+                 ng-if="settings.enableNotes">
+              <textarea ng-model="file.note"
+                        placeholder="Take a note here"></textarea>
+          </label>
+          <button class="button button-block button-positive"
+                  ng-click="openSelectAlbumModal()"
+                  ng-if="!isAlbumViewPrevSate">
+              Add to Album
+          </button>
+          <button class="button button-block button-positive"
+                  ng-click="addPhotoToAlbum(file)"
+                  ng-if="isAlbumViewPrevSate">
+              Save
+          </button>
+          <button class="button button-clear button-positive"
+                  ng-click="cancelAddingPhotoToAlbum()">Cancel
+          </button>
+      </div>
+</ion-content>
+</ion-view>
