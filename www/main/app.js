@@ -104,7 +104,10 @@ angular.module('imageExplorer', [
               controller: 'PhotoDetailsCtrl'
           }
       },
-      cache: false
+      cache: false,
+      params: {
+        file: null
+      }
   });
 
   // if none of the above states are matched, use this as the fallback

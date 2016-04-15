@@ -129,3 +129,7 @@
     background-repeat: no-repeat;
     background-position: center, center;
 }
+
+.photo-location {
+    white-space: normal;
+}

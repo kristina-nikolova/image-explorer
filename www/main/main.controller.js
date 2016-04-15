@@ -4,15 +4,15 @@
     angular.module('main', [])
         .controller('MainCtrl', MainCtrl)
 
-    MainCtrl.$inject = ['$scope', '$rootScope', '$timeout',  'SettingsService', 'DatabaseService', '$ionicPlatform'];
+    MainCtrl.$inject = ['$scope', '$rootScope', '$timeout',  'SettingsService', 'DatabaseAlbumTableService', 'DatabasePhotoTableService', '$ionicPlatform'];
 
-    function MainCtrl ($scope, $rootScope, $timeout, SettingsService, DatabaseService, $ionicPlatform) {
+    function MainCtrl ($scope, $rootScope, $timeout, SettingsService, DatabaseAlbumTableService, DatabasePhotoTableService, $ionicPlatform) {
 
         $scope.settings = SettingsService.settings;
 
         $ionicPlatform.ready(function() {
-            DatabaseService.selectAllAlbums();
-            DatabaseService.selectAllFiles();
+            DatabaseAlbumTableService.selectAllAlbums();
+            DatabasePhotoTableService.selectAllFiles();
         });
 
         $rootScope.$on('success', function(e, message){

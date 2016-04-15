@@ -4,29 +4,29 @@
     angular.module('album', [])
         .controller('AlbumCtrl', AlbumCtrl)
 
-    AlbumCtrl.$inject = ['$rootScope', '$scope', '$state', '$stateParams', '$ionicModal', 'DatabaseService', 'AlbumService', '$cordovaEmailComposer', '$ionicSlideBoxDelegate', '$ionicScrollDelegate'];
+    AlbumCtrl.$inject = ['$rootScope', '$scope', '$state', '$stateParams', '$ionicModal', 'DatabaseService', 'DatabaseAlbumTableService', 'DatabasePhotoTableService', '$cordovaEmailComposer', '$ionicSlideBoxDelegate', '$ionicScrollDelegate'];
 
-    function AlbumCtrl ($rootScope, $scope, $state, $stateParams, $ionicModal, DatabaseService, AlbumService, $cordovaEmailComposer, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
+    function AlbumCtrl ($rootScope, $scope, $state, $stateParams, $ionicModal, DatabaseService, DatabaseAlbumTableService, DatabasePhotoTableService, $cordovaEmailComposer, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
 
-        $scope.editModeOn = false;
+        $scope.isAlbumInEditMode = false;
+        $scope.isAlbumInDeleteMode = false;
         $scope.currentSlideIndex = 0;
         $scope.zoomMin = 1;
 
         function init() {
             $scope.album = DatabaseService.getAlbumById($stateParams.albumId);
-            DatabaseService.selectAllFilesInAlbum($stateParams.albumId);
+            DatabasePhotoTableService.selectAllFilesInAlbum($stateParams.albumId);
         }
 
         //TODO: use in one place for edit album/photo!
         $rootScope.$on('state:changed', function(){
-            if($scope.editModeOn) {
-                $scope.exitFromEditMode();
+            if($scope.isAlbumInEditMode || $scope.isAlbumInDeleteMode) {
+                $scope.exitFromEditDeleteMode();
             }
         });
 
         $scope.$on('allFilesInAlbum:Loaded', function (event, data) {
-            AlbumService.files  = data;
-            $scope.files = AlbumService.files;
+            $scope.files = DatabaseService.albumFiles ;
 
         });
 
@@ -36,11 +36,16 @@
         });
 
         $scope.enterInEditMode = function(){
-            $scope.editModeOn = true;
+            $scope.isAlbumInEditMode = true;
         }
 
-        $scope.exitFromEditMode = function(){
-            $scope.editModeOn = false;
+        $scope.enterInDeleteMode = function(){
+            $scope.isAlbumInDeleteMode = true;
+        }
+
+        $scope.exitFromEditDeleteMode = function(){
+            $scope.isAlbumInEditMode = false;
+            $scope.isAlbumInDeleteMode = false;
         }
 
         $scope.goToAddFilePage = function(){
@@ -49,8 +54,12 @@
             $state.go('tab.photo');
         }
 
+        $scope.editPhotoDetails = function(file) {
+            $state.go('tab.photo-details', { file: file });
+        };
+
         $scope.deleteFile = function(file) {
-            DatabaseService.deleteFileById(file);
+            DatabasePhotoTableService.deleteFileById(file);
             return;
         };
 

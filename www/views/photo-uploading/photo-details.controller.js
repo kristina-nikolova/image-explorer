@@ -4,9 +4,9 @@
     angular.module('photo-details', [])
         .controller('PhotoDetailsCtrl', PhotoDetailsCtrl)
 
-    PhotoDetailsCtrl.$inject = ['$scope', '$rootScope', '$state', '$ionicModal', '$timeout', '$ionicTabsDelegate', 'DatabaseService', 'AlbumService', 'PhotoService'];
+    PhotoDetailsCtrl.$inject = ['$scope', '$rootScope', '$state', '$stateParams', '$ionicModal', '$timeout', '$ionicTabsDelegate', 'DatabaseService', 'DatabasePhotoTableService', 'PhotoService'];
 
-    function PhotoDetailsCtrl ($scope, $rootScope, $state, $ionicModal, $timeout, $ionicTabsDelegate, DatabaseService, AlbumService, PhotoService) {
+    function PhotoDetailsCtrl ($scope, $rootScope, $state, $stateParams, $ionicModal, $timeout, $ionicTabsDelegate, DatabaseService, DatabasePhotoTableService, PhotoService) {
 
         $scope.file = {
             name: '',
@@ -16,11 +16,16 @@
             dateCreated: ""
         };
         $scope.isPhotoAddedToAlbum = false;
+        $scope.isAlbumInEditMode = false;
 
         function init(){
-
             $scope.albums = DatabaseService.albums;
             $scope.file.url = PhotoService._uploadedPhoto.url;
+
+            if ($stateParams.file) {
+                $scope.file = $stateParams.file;
+                $scope.isAlbumInEditMode = true;
+            }
 
             $ionicModal.fromTemplateUrl('views/photo-uploading/select-album.modal.template.html', function(modal) {
                 $scope.createSelectAlbumModal = modal;
@@ -33,7 +38,6 @@
             $scope.file.location = PhotoService._uploadedPhoto.location;
             $scope.file.dateCreated = PhotoService._uploadedPhoto.dateCreated;
         });
-
 
         function resetSelectAlbumModal() {
             for(var i=0; i < $scope.albums.length; i++ ) {
@@ -67,8 +71,8 @@
             if($rootScope.isAlbumViewPrevSate) {
                 var albumId = $rootScope.currentAlbum.id;
 
-                DatabaseService.insertFile(albumId, file);
-                $rootScope.$broadcast('filesInAlbum:Updated', AlbumService.files);
+                DatabasePhotoTableService.insertFile(albumId, file);
+                //$rootScope.$broadcast('filesInAlbum:Updated', DatabaseService.albumFiles);
 
                 $timeout(function(){
                     resetAddPhotoToAlbumForm();
@@ -84,8 +88,8 @@
 
             albums.map(function(album){
                 if(album.isSelected == true) {
-                    DatabaseService.insertFile(album.id, file);
-                    $rootScope.$broadcast('filesInAlbum:Updated', AlbumService.files);
+                    DatabasePhotoTableService.insertFile(album.id, file);
+                    //$rootScope.$broadcast('filesInAlbum:Updated', DatabaseService.albumFiles);
                 }
             });
 
@@ -105,6 +109,14 @@
                 }
             }
             $state.go('tab.photo');
+        }
+
+        $scope.editPhoto = function(file) {
+            DatabasePhotoTableService.updateFile(file);
+            $timeout(function(){
+                $state.go('tab.album', { albumId: file.album_id });
+                $scope.isAlbumInEditMode = false;
+            }, 1001);
         }
 
         init();

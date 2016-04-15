@@ -8,26 +8,36 @@
       </error-msg>
       <button class="button button-icon action-button"
               ng-click="goToAddFilePage()"
-              ng-hide="editModeOn">
+              ng-hide="isAlbumInEditMode || isAlbumInDeleteMode">
           <i class="icon ion-plus-circled balanced"></i>
       </button>
       <button class="button button-icon action-button"
               ng-click="enterInEditMode()"
-              ng-hide="editModeOn || files.length == 0">
+              ng-hide="isAlbumInEditMode || isAlbumInDeleteMode">
+          <i class="icon ion-edit balanced"></i>
+      </button>
+      <button class="button button-icon action-button"
+              ng-click="enterInDeleteMode()"
+              ng-hide="isAlbumInEditMode || isAlbumInDeleteMode || files.length == 0">
           <i class="icon ion-trash-a balanced"></i>
       </button>
       <button class="button button-clear button-positive"
-              ng-click="exitFromEditMode()"
-              ng-if="editModeOn">Exit
+              ng-click="exitFromEditDeleteMode()"
+              ng-if="isAlbumInEditMode || isAlbumInDeleteMode">Exit
       </button>
 
       <div class="clear"></div>
       <div class="card album"
            ng-repeat="file in files"
-           ng-class="{ 'not-clickable' : editModeOn }">
+           ng-class="{ 'not-clickable' : isAlbumInEditMode || isAlbumInDeleteMode }">
+          <button class="button button-icon delete-button"
+                  ng-click="editPhotoDetails(file)"
+                  ng-if="isAlbumInEditMode">
+              <i class="icon ion-edit balanced"></i>
+          </button>
           <button class="button button-icon delete-button"
                   ng-click="deleteFile(file)"
-                  ng-if="editModeOn">
+                  ng-if="isAlbumInDeleteMode">
               <i class="icon ion-android-remove-circle assertive"></i>
           </button>
           <div class="w-h-100"

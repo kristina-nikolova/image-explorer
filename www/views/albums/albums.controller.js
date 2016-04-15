@@ -4,9 +4,9 @@
     angular.module('albums', [])
         .controller('AlbumsCtrl', AlbumsCtrl)
 
-    AlbumsCtrl.$inject = ['$rootScope', '$scope', '$timeout', '$ionicModal', 'DatabaseService'];
+    AlbumsCtrl.$inject = ['$rootScope', '$scope', '$timeout', '$ionicModal', 'DatabaseService', 'DatabaseAlbumTableService'];
 
-    function AlbumsCtrl ($rootScope, $scope, $timeout, $ionicModal, DatabaseService) {
+    function AlbumsCtrl ($rootScope, $scope, $timeout, $ionicModal, DatabaseService, DatabaseAlbumTableService) {
 
         $scope.isAlbumCreated = false;
         $scope.isAlbumInDeleteMode = false;
@@ -28,8 +28,8 @@
 
         //TODO: use in one place for edit album/photo!
         $rootScope.$on('state:changed', function(){
-            if($scope.isAlbumInDeleteMode) {
-                $scope.exitFromDeleteMode();
+            if($scope.isAlbumInEditMode || $scope.isAlbumInDeleteMode) {
+                $scope.exitFromEditDeleteMode();
             }
         });
 
@@ -57,7 +57,7 @@
         };
 
         $scope.createAlbum = function(newAlbum) {
-            DatabaseService.insertAlbum(newAlbum);
+            DatabaseAlbumTableService.insertAlbum(newAlbum);
 
             $timeout(function(){
                 $scope.closeCreateEditAlbumModal();
@@ -65,7 +65,7 @@
         };
 
         $scope.editAlbum = function(album) {
-            DatabaseService.updateAlbum(album);
+            DatabaseAlbumTableService.updateAlbum(album);
             $scope.isAlbumInEditMode = false;
 
             $timeout(function(){
@@ -74,7 +74,7 @@
         };
 
         $scope.deleteAlbum = function(album) {
-            DatabaseService.deleteAlbumById(album);
+            DatabaseAlbumTableService.deleteAlbumById(album);
         };
 
         $scope.enterInEditMode = function(){

@@ -14,12 +14,17 @@
           </label>
           <button class="button button-block button-positive"
                   ng-click="openSelectAlbumModal()"
-                  ng-if="!isAlbumViewPrevSate">
+                  ng-if="!isAlbumViewPrevSate && !isAlbumInEditMode">
               Add to Album
           </button>
           <button class="button button-block button-positive"
                   ng-click="addPhotoToAlbum(file)"
                   ng-if="isAlbumViewPrevSate">
+              Save
+          </button>
+          <button class="button button-block button-positive"
+                  ng-click="editPhoto(file)"
+                  ng-if="isAlbumInEditMode">
               Save
           </button>
           <button class="button button-clear button-positive"
