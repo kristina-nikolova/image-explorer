@@ -34,6 +34,7 @@
             });
         }
 
+        //TODO: check if we have location/date when get photo from the camera
         $rootScope.$on('photo:getLocationDone', function(){
             $scope.file.location = PhotoService._uploadedPhoto.location;
             $scope.file.dateCreated = PhotoService._uploadedPhoto.dateCreated;
@@ -72,7 +73,6 @@
                 var albumId = $rootScope.currentAlbum.id;
 
                 DatabasePhotoTableService.insertFile(albumId, file);
-                //$rootScope.$broadcast('filesInAlbum:Updated', DatabaseService.albumFiles);
 
                 $timeout(function(){
                     resetAddPhotoToAlbumForm();
@@ -89,7 +89,6 @@
             albums.map(function(album){
                 if(album.isSelected == true) {
                     DatabasePhotoTableService.insertFile(album.id, file);
-                    //$rootScope.$broadcast('filesInAlbum:Updated', DatabaseService.albumFiles);
                 }
             });
 

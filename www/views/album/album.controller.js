@@ -4,9 +4,9 @@
     angular.module('album', [])
         .controller('AlbumCtrl', AlbumCtrl)
 
-    AlbumCtrl.$inject = ['$rootScope', '$scope', '$state', '$stateParams', '$ionicModal', 'DatabaseService', 'DatabaseAlbumTableService', 'DatabasePhotoTableService', '$cordovaEmailComposer', '$ionicSlideBoxDelegate', '$ionicScrollDelegate'];
+    AlbumCtrl.$inject = ['$rootScope', '$scope', '$state', '$stateParams', '$ionicModal', 'DatabaseService', 'DatabasePhotoTableService', '$ionicSlideBoxDelegate', '$ionicScrollDelegate', '$cordovaSocialSharing'];
 
-    function AlbumCtrl ($rootScope, $scope, $state, $stateParams, $ionicModal, DatabaseService, DatabaseAlbumTableService, DatabasePhotoTableService, $cordovaEmailComposer, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
+    function AlbumCtrl ($rootScope, $scope, $state, $stateParams, $ionicModal, DatabaseService, DatabasePhotoTableService, $ionicSlideBoxDelegate, $ionicScrollDelegate, $cordovaSocialSharing) {
 
         $scope.isAlbumInEditMode = false;
         $scope.isAlbumInDeleteMode = false;
@@ -30,8 +30,7 @@
 
         });
 
-        $scope.$on('filesInAlbum:Updated', function (event, data) {
-            $scope.files = data;
+        $scope.$on('filesInAlbum:Updated', function () {
             $scope.$applyAsync();
         });
 
@@ -126,61 +125,68 @@
             $scope.fileInfoModal.hide();
         };
 
-        $scope.sharePhoto = function() {
-            //window.open("mailto:?subject=Something to share with you...");
+        $scope.shareToEmail = function() {
 
-//            var bodyText = "<h2>Look at this image!</h2>";
-//            var images = [];
-//            images.push("" + $scope.file.url);
-//            images[0] = images[0].replace('file://', '');
-//
-//            cordova.plugins.email.isAvailable(
-//                function (isAvailable) {
-//                    console.log("it is available");
-//                }
-//            );
-//
-//            cordova.plugins.email.open({
-//                    //app:         "gmail",
-//                    to:          ["kristina.g.nikolova@gmail.com"],
-//                    cc:          ["kristina.g.nikolova@gmail.com"],
-//                    //bcc:         Array, // email addresses for BCC field
-//                    attachments: images, // file paths or base64 data streams
-//                    subject:    "Just some images", // subject of the email
-//                    body:       bodyText, // email body (for HTML, set isHtml to true)
-//                    isHtml:    true // indicats if the body is HTML or plain text
-//                }, function () {
-//                    console.log('email view dismissed');
-//                },
-//                this);
+            var message = 'Message via Email',
+                subject = null,
+                toArr = null,
+                ccArr = null,
+                bccArr = null,
+                file = [$scope.file.url];
 
+            $cordovaSocialSharing
+                .shareViaEmail(message, subject, toArr, ccArr, bccArr, file)
+                .then(function(result) {
+                    console.log(result);
+                }, function(err) {
+                    console.log(err);
+                });
+        }
 
+        $scope.shareToFacebook = function() {
 
-//            $cordovaEmailComposer.isAvailable().then(function() {
-//                console.log('available');
-//            }, function () {
-//                console.log('not available');
-//            });
-//
-//            var email = {
-//                to: 'kristina.g.nikolova@gmail.com',
-//                cc: 'kristina.g.nikolova@gmail.com',
-//                //bcc: ['john@doe.com', 'jane@doe.com'],
-////                attachments: [
-////                    'file://img/logo.png',
-////                    'res://icon.png',
-////                    'base64:icon.png//iVBORw0KGgoAAAANSUhEUg...',
-////                    'file://README.pdf'
-////                ],
-//                subject: 'Cordova Icons',
-//                body: 'How are you? Nice greetings from Leipzig',
-//                isHtml: true
-//            };
-//
-//            $cordovaEmailComposer.open(email).then(null, function () {
-//                // user cancelled email
-//                console.log('email is open');
-//            });
+            var message = 'Message via Facebook',
+                image = [$scope.file.url],
+                link = null;
+
+            $cordovaSocialSharing
+                .shareViaFacebook(message, image, link)
+                .then(function(result) {
+                    console.log(result);
+                }, function(err) {
+                    console.log(err);
+                });
+        }
+
+        $scope.shareToTwitter = function() {
+
+            var message = 'Message via Twitter',
+                image = [$scope.file.url],
+                link = null;
+
+            $cordovaSocialSharing
+                .shareViaTwitter(message, image, link)
+                .then(function(result) {
+                    console.log(result);
+                }, function(err) {
+                    console.log(err);
+                });
+        }
+
+        $scope.shareExternal = function() {
+
+            var message = 'Message',
+                subject =  null,
+                file = [$scope.file.url],
+                link = null;
+
+            $cordovaSocialSharing
+                .share(message, subject, file, link)
+                .then(function(result) {
+                    console.log(result);
+                }, function(err) {
+                    console.log(err);
+                });
         }
 
         init();

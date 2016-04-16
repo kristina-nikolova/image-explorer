@@ -34,8 +34,7 @@
         });
 
         //TODO: update the scope not with broadcasted event!
-        $scope.$on('albums:Updated', function (event, data) {
-            $scope.albums = data;
+        $scope.$on('albums:Updated', function () {
             $scope.$applyAsync();
         });
 
