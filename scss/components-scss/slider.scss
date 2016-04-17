@@ -1,0 +1,29 @@
+.slider {
+  width: 100%;
+  height: 100%;
+  background: #000;
+
+  .slider-slide h1 {
+    color: #fff;
+    text-align: center;
+    font-size: 18px;
+    line-height: 44px;
+  }
+
+  .photo-fullsize {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center, center;
+  }
+}
+
+.slider-btn {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+
+.slider-close-btn {
+  right: 6px;
+}

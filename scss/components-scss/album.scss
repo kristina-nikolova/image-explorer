@@ -1,0 +1,30 @@
+.photo.card {
+  width: 150px;
+  height: 150px;
+  margin-right: 10px;
+  margin-left: 10px;
+  position: relative;
+  float: left;
+
+  .item-image {
+    padding: 0;
+    width: 100%;
+    height: calc(100% - 30px);
+    text-align: center;
+    background-repeat:  no-repeat;
+    background-position: center center;
+    background-size: cover;
+  }
+
+  .item-divider {
+    max-height: 33px;
+  }
+}
+
+.delete-button {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  right: 0;
+  pointer-events: initial;
+}

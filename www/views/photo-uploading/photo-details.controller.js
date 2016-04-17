@@ -112,6 +112,11 @@
 
         $scope.editPhoto = function(file) {
             DatabasePhotoTableService.updateFile(file);
+
+            $timeout(function(){
+                resetAddPhotoToAlbumForm();
+            }, 1000);
+
             $timeout(function(){
                 $state.go('tab.album', { albumId: file.album_id });
                 $scope.isAlbumInEditMode = false;
