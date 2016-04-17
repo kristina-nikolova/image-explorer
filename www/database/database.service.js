@@ -28,7 +28,6 @@
         function deleteFile(file) {
             service.albumFiles.splice(service.albumFiles.indexOf(file), 1);
             service.allFiles.splice(service.allFiles.indexOf(file), 1);
-            $rootScope.$broadcast('filesInAlbum:Updated', service.albumFiles);
 
             //dashboards data
             $rootScope.allFilesCount -= 1;

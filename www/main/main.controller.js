@@ -15,7 +15,9 @@
             DatabasePhotoTableService.selectAllFiles();
         });
 
+        //TODO: show messages?!
         $rootScope.$on('success', function(e, message){
+            $scope.$applyAsync();
             $rootScope.success = message;
 
             $timeout(function(){

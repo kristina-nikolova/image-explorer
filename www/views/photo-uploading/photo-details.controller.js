@@ -17,10 +17,10 @@
         };
         $scope.isPhotoAddedToAlbum = false;
         $scope.isAlbumInEditMode = false;
+        $scope.albums = DatabaseService.albums;
+        $scope.file.url = PhotoService._uploadedPhoto.url;
 
         function init(){
-            $scope.albums = DatabaseService.albums;
-            $scope.file.url = PhotoService._uploadedPhoto.url;
 
             if ($stateParams.file) {
                 $scope.file = $stateParams.file;
@@ -35,7 +35,8 @@
         }
 
         //TODO: check if we have location/date when get photo from the camera
-        $rootScope.$on('photo:getLocationDone', function(){
+
+        $rootScope.$on('photo:getLocationDone', function() {
             $scope.file.location = PhotoService._uploadedPhoto.location;
             $scope.file.dateCreated = PhotoService._uploadedPhoto.dateCreated;
         });

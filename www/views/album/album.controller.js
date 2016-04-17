@@ -18,20 +18,9 @@
             DatabasePhotoTableService.selectAllFilesInAlbum($stateParams.albumId);
         }
 
-        //TODO: use in one place for edit album/photo!
-        $rootScope.$on('state:changed', function(){
-            if($scope.isAlbumInEditMode || $scope.isAlbumInDeleteMode) {
-                $scope.exitFromEditDeleteMode();
-            }
-        });
-
         $scope.$on('allFilesInAlbum:Loaded', function (event, data) {
-            $scope.files = DatabaseService.albumFiles ;
+            $scope.files = DatabaseService.albumFiles;
 
-        });
-
-        $scope.$on('filesInAlbum:Updated', function () {
-            $scope.$applyAsync();
         });
 
         $scope.enterInEditMode = function(){
@@ -43,8 +32,10 @@
         }
 
         $scope.exitFromEditDeleteMode = function(){
-            $scope.isAlbumInEditMode = false;
-            $scope.isAlbumInDeleteMode = false;
+            if($scope.isAlbumInEditMode || $scope.isAlbumInDeleteMode) {
+                $scope.isAlbumInEditMode = false;
+                $scope.isAlbumInDeleteMode = false;
+            }
         }
 
         $scope.goToAddFilePage = function(){

@@ -4,9 +4,9 @@
     angular.module('albums', [])
         .controller('AlbumsCtrl', AlbumsCtrl)
 
-    AlbumsCtrl.$inject = ['$rootScope', '$scope', '$timeout', '$ionicModal', 'DatabaseService', 'DatabaseAlbumTableService'];
+    AlbumsCtrl.$inject = ['$scope', '$timeout', '$ionicModal', 'DatabaseService', 'DatabaseAlbumTableService'];
 
-    function AlbumsCtrl ($rootScope, $scope, $timeout, $ionicModal, DatabaseService, DatabaseAlbumTableService) {
+    function AlbumsCtrl ($scope, $timeout, $ionicModal, DatabaseService, DatabaseAlbumTableService) {
 
         $scope.isAlbumCreated = false;
         $scope.isAlbumInDeleteMode = false;
@@ -15,28 +15,15 @@
             name: "",
             description: ""
         }
+        $scope.albums = DatabaseService.albums;
 
         function init() {
-            $scope.albums = DatabaseService.albums;
-
             $ionicModal.fromTemplateUrl('views/albums/create-album.modal.template.html', function(modal) {
                 $scope.createEditAlbumModal = modal;
             }, {
                 scope: $scope
             });
         }
-
-        //TODO: use in one place for edit album/photo!
-        $rootScope.$on('state:changed', function(){
-            if($scope.isAlbumInEditMode || $scope.isAlbumInDeleteMode) {
-                $scope.exitFromEditDeleteMode();
-            }
-        });
-
-        //TODO: update the scope not with broadcasted event!
-        $scope.$on('albums:Updated', function () {
-            $scope.$applyAsync();
-        });
 
         function resetCreateEditAlbumModal() {
             $scope.newAlbum = {
@@ -84,9 +71,11 @@
             $scope.isAlbumInDeleteMode = true;
         }
 
-        $scope.exitFromEditDeleteMode = function(){
-            $scope.isAlbumInDeleteMode = false;
-            $scope.isAlbumInEditMode = false;
+        $scope.exitFromEditDeleteMode = function() {
+            if($scope.isAlbumInEditMode || $scope.isAlbumInDeleteMode) {
+                $scope.isAlbumInDeleteMode = false;
+                $scope.isAlbumInEditMode = false;
+            }
         }
 
         init();

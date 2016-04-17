@@ -60,7 +60,6 @@
                 tx.executeSql('DELETE FROM album WHERE id = ?', [album.id],
                     function(tx, res) {
                         DatabaseService.albums.splice(DatabaseService.albums.indexOf(album), 1);
-                        $rootScope.$broadcast('albums:Updated');
                         $rootScope.$broadcast('success', 'Successful deleted album');
 
                         //dashboards data

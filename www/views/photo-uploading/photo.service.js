@@ -41,6 +41,7 @@
                             var lat = EXIF.getTag(this,"GPSLatitude");
                             if(!long || !lat) {
                                 service._uploadedPhoto.location = 'No location info';
+                                $rootScope.$broadcast('photo:getLocationDone');
                                 return;
                             }
                             long = convertDegToDec(long);

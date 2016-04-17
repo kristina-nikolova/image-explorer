@@ -26,10 +26,6 @@ angular.module('imageExplorer', [
         }
       });
 
-    $rootScope.$on('$stateChangeStart',
-        function(event, toState, toParams, fromState, fromParams){
-            $rootScope.$broadcast('state:changed');
-        })
 })
 
 .config(function($compileProvider){
