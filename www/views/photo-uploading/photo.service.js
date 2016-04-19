@@ -4,9 +4,9 @@
     angular.module('photo')
         .factory('PhotoService', PhotoService)
 
-    PhotoService.$inject = ['$rootScope', 'CameraService', 'Location', '$state'];
+    PhotoService.$inject = ['$rootScope', 'CameraService', 'Location', '$state', '$cordovaGeolocation'];
 
-    function PhotoService ($rootScope, CameraService, Location, $state) {
+    function PhotoService ($rootScope, CameraService, Location, $state, $cordovaGeolocation) {
 
         var service = {};
 
@@ -21,7 +21,7 @@
             CameraService.getPhoto(fromPhotolibrary).then(function(imageURI) {
                 service._uploadedPhoto.url = imageURI;
 
-                getPhotoInfo(imageURI);
+                getPhotoInfo(fromPhotolibrary, imageURI);
 
                 $state.go('tab.photo-details');
             }, function(err) {
@@ -29,33 +29,54 @@
             });
         }
 
-        function getPhotoInfo(imageURI) {
+        function getPhotoInfo(fromPhotolibrary, imageURI) {
             window.resolveLocalFileSystemURL(imageURI,
-                function(entry) {
-                    entry.file(function(file) {
-                        EXIF.getData(file, function() {
+                function (entry) {
+                    entry.file(function (file) {
+                        EXIF.getData(file, function () {
                             var datetime = EXIF.getTag(this, "DateTime");
                             service._uploadedPhoto.dateCreated = datetime;
 
-                            var long = EXIF.getTag(this,"GPSLongitude");
-                            var lat = EXIF.getTag(this,"GPSLatitude");
-                            if(!long || !lat) {
-                                service._uploadedPhoto.location = 'No location info';
-                                $rootScope.$broadcast('photo:getLocationDone');
-                                return;
+                            if(fromPhotolibrary) {
+                                var long = EXIF.getTag(this, "GPSLongitude");
+                                var lat = EXIF.getTag(this, "GPSLatitude");
+                                if (!long || !lat) {
+                                    service._uploadedPhoto.location = 'No location info';
+                                    $rootScope.$broadcast('photo:getLocationDone');
+                                    return;
+                                }
+                                long = convertDegToDec(long);
+                                lat = convertDegToDec(lat);
+                                //handle W/S
+                                if (EXIF.getTag(this, "GPSLongitudeRef") === "W") long = -1 * long;
+                                if (EXIF.getTag(this, "GPSLatitudeRef") === "S") lat = -1 * lat;
+                                locateAddress(long, lat);
+                            } else {
+                                var posOptions = {timeout: 10000, enableHighAccuracy: false};
+                                $cordovaGeolocation
+                                    .getCurrentPosition(posOptions)
+                                    .then(function (position) {
+                                        var lat  = position.coords.latitude
+                                        var long = position.coords.longitude
+
+                                        if (!long || !lat) {
+                                            service._uploadedPhoto.location = 'No location info';
+                                            $rootScope.$broadcast('photo:getLocationDone');
+                                            return;
+                                        }
+
+                                        locateAddress(long, lat);
+                                    }, function(err) {
+                                        console.log(err);
+                                    });
                             }
-                            long = convertDegToDec(long);
-                            lat = convertDegToDec(lat);
-                            //handle W/S
-                            if(EXIF.getTag(this,"GPSLongitudeRef") === "W") long = -1 * long;
-                            if(EXIF.getTag(this,"GPSLatitudeRef") === "S") lat = -1 * lat;
-                            locateAddress(long,lat);
                         });
                     });
                 },
-                function(err) {
+                function (err) {
                     console.log(err);
                 });
+
         }
 
         //utility funct based on https://en.wikipedia.org/wiki/Geographic_coordinate_conversion

@@ -10,37 +10,38 @@
 
         var service = {};
 
-        service.createFileTable = createFileTable;
-        service.insertFile = insertFile;
-        service.updateFile = updateFile;
-        service.deleteFileById = deleteFileById;
-        service.selectAllFiles = selectAllFiles;
-        service.selectAllFilesInAlbum = selectAllFilesInAlbum;
+        service.createPhotoTable = createPhotoTable;
+        service.insertPhoto = insertPhoto;
+        service.updatePhoto = updatePhoto;
+        service.deletePhotoById = deletePhotoById;
+        service.selectAllPhotos = selectAllPhotos;
+        service.selectAllPhotosInAlbum = selectAllPhotosInAlbum;
 
         $ionicPlatform.ready(function() {
-            createFileTable();
+            createPhotoTable();
         });
 
-        function createFileTable () {
+        function createPhotoTable () {
             DatabaseService.db.transaction(function (tx) {
-                //tx.executeSql("DROP TABLE IF EXISTS file");
-                tx.executeSql("CREATE TABLE IF NOT EXISTS file (id integer primary key, album_id integer, name text, url text, note text, location text, dateCreated datetime)");
+                //tx.executeSql("DROP TABLE IF EXISTS photo");
+                tx.executeSql("DROP TABLE IF EXISTS file");
+                tx.executeSql("CREATE TABLE IF NOT EXISTS photo (id integer primary key, album_id integer, name text, url text, note text, location text, dateCreated datetime)");
             });
         }
 
-        function insertFile(album_id, file) {
+        function insertPhoto(album_id, photo) {
             DatabaseService.db.transaction(function (tx) {
-                tx.executeSql('INSERT INTO file (album_id, name, url, note, location, dateCreated) VALUES (?, ?, ?, ?, ?, ?)', [album_id, file.name, file.url, file.note, file.location, file.dateCreated],
+                tx.executeSql('INSERT INTO photo (album_id, name, url, note, location, dateCreated) VALUES (?, ?, ?, ?, ?, ?)', [album_id, photo.name, photo.url, photo.note, photo.location, photo.dateCreated],
                     function(tx, res) {
-                        file.id = res.insertId;
-                        file.album_id = album_id;
-                        DatabaseService.albumFiles.push(file);
-                        DatabaseService.allFiles.push(file);
+                        photo.id = res.insertId;
+                        photo.album_id = album_id;
+                        DatabaseService.albumPhotos.push(photo);
+                        DatabaseService.allPhotos.push(photo);
                         $rootScope.$broadcast('success', 'Successful added to the album');
 
                         //dashboards data
-                        $rootScope.allFilesCount += 1;
-                        if (file.note != "") {
+                        $rootScope.allPhotosCount += 1;
+                        if (photo.note != "") {
                             $rootScope.notesCount += 1;
                         }
                     }, function (err) {
@@ -49,14 +50,14 @@
             });
         }
 
-        function updateFile(file) {
+        function updatePhoto(photo) {
             DatabaseService.db.transaction(function (tx) {
-                tx.executeSql('UPDATE file SET album_id=?, name=?, url=?, note=?, location=?, dateCreated=? WHERE id=?', [file.album_id, file.name, file.url, file.note, file.location, file.dateCreated, file.id],
+                tx.executeSql('UPDATE photo SET album_id=?, name=?, url=?, note=?, location=?, dateCreated=? WHERE id=?', [photo.album_id, photo.name, photo.url, photo.note, photo.location, photo.dateCreated, photo.id],
                     function(tx, res) {
                         $rootScope.$broadcast('success', 'Successful updated photo');
 
                         //dashboards data
-//                        if (file.note != "") {
+//                        if (photo.note != "") {
 //                            $rootScope.notesCount += 1;
 //                        } else {
 //                            $rootScope.notesCount -= 1;
@@ -67,11 +68,11 @@
             });
         }
 
-        function deleteFileById(file) {
+        function deletePhotoById(photo) {
             DatabaseService.db.transaction(function (tx) {
-                tx.executeSql('DELETE FROM file WHERE id = ?', [file.id],
+                tx.executeSql('DELETE FROM photo WHERE id = ?', [photo.id],
                     function(tx, res) {
-                        DatabaseService.deleteFile(file);
+                        DatabaseService.deletePhoto(photo);
                         $rootScope.$broadcast('success', 'Successful deleted from the album');
                     }, function (err) {
                         $rootScope.$broadcast('error', err);
@@ -79,40 +80,40 @@
             });
         }
 
-        function selectAllFiles()  {
+        function selectAllPhotos()  {
             DatabaseService.db.transaction(function (tx) {
-                tx.executeSql('SELECT * FROM file', [],
+                tx.executeSql('SELECT * FROM photo', [],
                     function(tx, res) {
                         var array = [];
-                        DatabaseService.allFiles = [];
+                        DatabaseService.allPhotos = [];
 
                         if(res.rows && res.rows.length > 0) {
                             for(var i=0; i<res.rows.length; i++){
                                 array.push(res.rows.item(i));
                             }
-                            DatabaseService.allFiles = array;
+                            DatabaseService.allPhotos = array;
                         }
-                        $rootScope.$broadcast('allFiles:Loaded', array);
+                        $rootScope.$broadcast('allPhotos:Loaded', array);
                     }, function (err) {
                         $rootScope.$broadcast('error', err);
                     });
             });
         }
 
-        function selectAllFilesInAlbum(album_id)  {
+        function selectAllPhotosInAlbum(album_id)  {
             DatabaseService.db.transaction(function (tx) {
-                tx.executeSql('SELECT * FROM file WHERE album_id = ?', [album_id],
+                tx.executeSql('SELECT * FROM photo WHERE album_id = ?', [album_id],
                     function(tx, res) {
                         var array = [];
-                        DatabaseService.albumFiles = [];
+                        DatabaseService.albumPhotos = [];
 
                         if(res.rows && res.rows.length > 0) {
                             for(var i=0; i<res.rows.length; i++){
                                 array.push(res.rows.item(i));
                             }
-                            DatabaseService.albumFiles = array;
+                            DatabaseService.albumPhotos = array;
                         }
-                        $rootScope.$broadcast('allFilesInAlbum:Loaded', array);
+                        $rootScope.$broadcast('allPhotosInAlbum:Loaded', array);
                     }, function (err) {
                         $rootScope.$broadcast('error', err);
                     });

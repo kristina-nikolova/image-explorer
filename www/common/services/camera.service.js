@@ -20,7 +20,6 @@
                 encodingType: navigator.camera.EncodingType.JPEG,
                 targetWidth: 300,
                 targetHeight: 300
-               // destinationType: navigator.camera.DestinationType.NATIVE_URI
             };
 
             navigator.camera.getPicture(

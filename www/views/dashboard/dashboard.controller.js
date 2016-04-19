@@ -13,11 +13,11 @@
             $rootScope.$applyAsync();
         });
 
-        $rootScope.$on('allFiles:Loaded', function (event, files) {
-            $rootScope.allFilesCount = files.length;
-            if($rootScope.allFilesCount) {
-                $rootScope.notesCount = files.filter(function (file) {
-                    return file.note != "";
+        $rootScope.$on('allPhotos:Loaded', function (event, photos) {
+            $rootScope.allPhotosCount = photos.length;
+            if($rootScope.allPhotosCount) {
+                $rootScope.notesCount = photos.filter(function (photo) {
+                    return photo.note != "";
                 }).length;
             } else {
                 $rootScope.notesCount = 0;

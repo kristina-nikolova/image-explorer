@@ -8,7 +8,7 @@
 
     function PhotoDetailsCtrl ($scope, $rootScope, $state, $stateParams, $ionicModal, $timeout, $ionicTabsDelegate, DatabaseService, DatabasePhotoTableService, PhotoService) {
 
-        $scope.file = {
+        $scope.photo = {
             name: '',
             url: '',
             note: '',
@@ -18,12 +18,12 @@
         $scope.isPhotoAddedToAlbum = false;
         $scope.isAlbumInEditMode = false;
         $scope.albums = DatabaseService.albums;
-        $scope.file.url = PhotoService._uploadedPhoto.url;
+        $scope.photo.url = PhotoService._uploadedPhoto.url;
 
         function init(){
 
-            if ($stateParams.file) {
-                $scope.file = $stateParams.file;
+            if ($stateParams.photo) {
+                $scope.photo = $stateParams.photo;
                 $scope.isAlbumInEditMode = true;
             }
 
@@ -34,11 +34,9 @@
             });
         }
 
-        //TODO: check if we have location/date when get photo from the camera
-
         $rootScope.$on('photo:getLocationDone', function() {
-            $scope.file.location = PhotoService._uploadedPhoto.location;
-            $scope.file.dateCreated = PhotoService._uploadedPhoto.dateCreated;
+            $scope.photo.location = PhotoService._uploadedPhoto.location;
+            $scope.photo.dateCreated = PhotoService._uploadedPhoto.dateCreated;
         });
 
         function resetSelectAlbumModal() {
@@ -68,12 +66,12 @@
             resetSelectAlbumModal();
         };
 
-        $scope.addPhotoToAlbum = function(file, albums) {
-            //add file from album view
+        $scope.addPhotoToAlbum = function(photo, albums) {
+            //add photo from album view
             if($rootScope.isAlbumViewPrevSate) {
                 var albumId = $rootScope.currentAlbum.id;
 
-                DatabasePhotoTableService.insertFile(albumId, file);
+                DatabasePhotoTableService.insertPhoto(albumId, photo);
 
                 $timeout(function(){
                     resetAddPhotoToAlbumForm();
@@ -89,7 +87,7 @@
 
             albums.map(function(album){
                 if(album.isSelected == true) {
-                    DatabasePhotoTableService.insertFile(album.id, file);
+                    DatabasePhotoTableService.insertPhoto(album.id, photo);
                 }
             });
 
@@ -111,15 +109,15 @@
             $state.go('tab.photo');
         }
 
-        $scope.editPhoto = function(file) {
-            DatabasePhotoTableService.updateFile(file);
+        $scope.editPhoto = function(photo) {
+            DatabasePhotoTableService.updatePhoto(photo);
 
             $timeout(function(){
                 resetAddPhotoToAlbumForm();
             }, 1000);
 
             $timeout(function(){
-                $state.go('tab.album', { albumId: file.album_id });
+                $state.go('tab.album', { albumId: photo.album_id });
                 $scope.isAlbumInEditMode = false;
             }, 1001);
         }

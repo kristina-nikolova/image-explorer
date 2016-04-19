@@ -12,10 +12,9 @@
 
         $ionicPlatform.ready(function() {
             DatabaseAlbumTableService.selectAllAlbums();
-            DatabasePhotoTableService.selectAllFiles();
+            DatabasePhotoTableService.selectAllPhotos();
         });
 
-        //TODO: show messages?!
         $rootScope.$on('success', function(e, message){
             $scope.$applyAsync();
             $rootScope.success = message;

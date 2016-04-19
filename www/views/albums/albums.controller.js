@@ -33,7 +33,13 @@
         };
 
         $scope.openCreateEditAlbumModal = function(album) {
-            $scope.album = album;
+            if(album) {
+                $scope.album = album;
+                $scope.isAlbumInEditMode = true;
+            } else {
+                $scope.isAlbumInEditMode = false;
+            }
+
             $scope.createEditAlbumModal.show();
         };
 
@@ -62,21 +68,6 @@
         $scope.deleteAlbum = function(album) {
             DatabaseAlbumTableService.deleteAlbumById(album);
         };
-
-        $scope.enterInEditMode = function(){
-            $scope.isAlbumInEditMode = true;
-        }
-
-        $scope.enterInDeleteMode = function(){
-            $scope.isAlbumInDeleteMode = true;
-        }
-
-        $scope.exitFromEditDeleteMode = function() {
-            if($scope.isAlbumInEditMode || $scope.isAlbumInDeleteMode) {
-                $scope.isAlbumInDeleteMode = false;
-                $scope.isAlbumInEditMode = false;
-            }
-        }
 
         init();
     }

@@ -1,0 +1,21 @@
+<div class="card photo"
+     ng-class="{ 'not-clickable' : isInEditMode || isInDeleteMode }">
+    <button class="button button-icon delete-button"
+            ng-click="editPhotoAction(photo)"
+            ng-if="isInEditMode">
+        <i class="icon ion-edit balanced"></i>
+    </button>
+    <button class="button button-icon delete-button"
+            ng-click="deletePhotoAction(photo)"
+            ng-if="isInDeleteMode">
+        <i class="icon ion-android-remove-circle assertive"></i>
+    </button>
+    <div class="w-h-100"
+         ng-click="openPhotoAction(photo, photos)">
+        <div class="item item-image"
+             style="background-image: url({{photo.url}})"></div>
+        <div class="item item-divider center">
+            <h2>{{photo.name}}</h2>
+        </div>
+    </div>
+</div>

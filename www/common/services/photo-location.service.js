@@ -26,7 +26,6 @@
                 Geocode.getAddress(long,lat).then(function(result) {
                     if(result.data && result.data.results && result.data.results.length >= 1) {
                         var bestMatch = result.data.results[0];
-                        console.log(JSON.stringify(bestMatch));
                         var result = {
                             type:"geocode",
                             address:bestMatch.formatted_address

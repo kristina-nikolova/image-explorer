@@ -68,20 +68,20 @@
                         $rootScope.$broadcast('error', err);
                     });
             });
-            deleteAllFileInAlbum(album.id);
+            deleteAllPhotosInAlbum(album.id);
         }
 
-        function deleteAllFileInAlbum(album_id)  {
+        function deleteAllPhotosInAlbum(album_id)  {
 
-            DatabaseService.getAllFilesInAlbum(album_id);
-            var albumFiles = angular.copy(DatabaseService.albumFiles);
-            for(var i = 0; i < albumFiles.length; i++){
-                var file = albumFiles[i];
-                DatabaseService.deleteFile(file);
+            DatabaseService.getAllPhotosInAlbum(album_id);
+            var albumPhotos = angular.copy(DatabaseService.albumPhotos);
+            for(var i = 0; i < albumPhotos.length; i++){
+                var photo = albumPhotos[i];
+                DatabaseService.deletePhoto(photo);
             }
 
             DatabaseService.db.transaction(function (tx) {
-                tx.executeSql('DELETE FROM file WHERE album_id = ?', [album_id],
+                tx.executeSql('DELETE FROM photo WHERE album_id = ?', [album_id],
                     function(tx, res) {
                     }, function (err) {
                         $rootScope.$broadcast('error', err);

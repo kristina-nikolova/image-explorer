@@ -1,4 +1,4 @@
-<ion-view view-title="{{album.name}}" state-change-action action="exitFromEditDeleteMode()">
+<ion-view view-title="{{album.name}}">
   <ion-content class="padding">
       <success-msg message="success"
                    ng-if="success">
@@ -6,49 +6,23 @@
       <error-msg message="error"
                  ng-if="error">
       </error-msg>
-      <button class="button button-icon action-button"
-              ng-click="goToAddFilePage()"
-              ng-hide="isAlbumInEditMode || isAlbumInDeleteMode">
-          <i class="icon ion-plus-circled balanced"></i>
-      </button>
-      <button class="button button-icon action-button"
-              ng-click="enterInEditMode()"
-              ng-hide="isAlbumInEditMode || isAlbumInDeleteMode">
-          <i class="icon ion-edit balanced"></i>
-      </button>
-      <button class="button button-icon action-button"
-              ng-click="enterInDeleteMode()"
-              ng-hide="isAlbumInEditMode || isAlbumInDeleteMode || files.length == 0">
-          <i class="icon ion-trash-a balanced"></i>
-      </button>
-      <button class="button button-clear button-positive"
-              ng-click="exitFromEditDeleteMode()"
-              ng-if="isAlbumInEditMode || isAlbumInDeleteMode">Exit
-      </button>
+      <action-buttons add-action="goToAddPhotoPage()"
+                      is-in-edit-mode="isAlbumInEditMode"
+                      is-in-delete-mode="isAlbumInDeleteMode"
+                      condition="photos.length == 0">
+      </action-buttons>
 
       <div class="clear"></div>
-      <div class="card photo"
-           ng-repeat="file in files"
-           ng-class="{ 'not-clickable' : isAlbumInEditMode || isAlbumInDeleteMode }">
-          <button class="button button-icon delete-button"
-                  ng-click="editPhotoDetails(file)"
-                  ng-if="isAlbumInEditMode">
-              <i class="icon ion-edit balanced"></i>
-          </button>
-          <button class="button button-icon delete-button"
-                  ng-click="deleteFile(file)"
-                  ng-if="isAlbumInDeleteMode">
-              <i class="icon ion-android-remove-circle assertive"></i>
-          </button>
-          <div class="w-h-100"
-               ng-click="openFileSliderModal(file, files)">
-              <div class="item item-image"
-                   style="background-image: url({{file.url}})"></div>
-              <div class="item item-divider center">
-                  <h2>{{file.name}}</h2>
-              </div>
-          </div>
-      </div>
+
+      <photo ng-repeat="photo in photos"
+             photo="photo"
+             photos="photos"
+             is-in-edit-mode="isAlbumInEditMode"
+             is-in-delete-mode="isAlbumInDeleteMode"
+             edit-photo-action="editPhotoDetails(photo)"
+             delete-photo-action="deletePhoto(photo)"
+             open-photo-action="openPhotoSliderModal(photo, photos)">
+      </photo>
 
   </ion-content>
 </ion-view>

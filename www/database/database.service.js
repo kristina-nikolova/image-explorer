@@ -10,28 +10,28 @@
 
         var service = {};
 
-        service.deleteFile = deleteFile;
+        service.deletePhoto = deletePhoto;
         service.getAlbumById = getAlbumById;
-        service.getAllFilesInAlbum = getAllFilesInAlbum;
+        service.getAllPhotosInAlbum = getAllPhotosInAlbum;
 
         service.db = null;
 
         service.albums = [];
-        service.albumFiles = [];
-        service.allFiles = [];
+        service.albumPhotos = [];
+        service.allPhotos = [];
 
         $ionicPlatform.ready(function() {
-            service.db = openDatabase("my.db", "1.0", "File Explorer DB", 200000);
+            service.db = openDatabase("my.db", "1.0", "Image Explorer DB", 200000);
         });
 
-        //helper used in album and file tables
-        function deleteFile(file) {
-            service.albumFiles.splice(service.albumFiles.indexOf(file), 1);
-            service.allFiles.splice(service.allFiles.indexOf(file), 1);
+        //helper used in album and photo tables
+        function deletePhoto(photo) {
+            service.albumPhotos.splice(service.albumPhotos.indexOf(photo), 1);
+            service.allPhotos.splice(service.allPhotos.indexOf(photo), 1);
 
             //dashboards data
-            $rootScope.allFilesCount -= 1;
-            if (file.note != "") {
+            $rootScope.allPhotosCount -= 1;
+            if (photo.note != "") {
                 $rootScope.notesCount -= 1;
             }
         }
@@ -45,13 +45,13 @@
             return null;
         }
 
-        function getAllFilesInAlbum(albumId) {
-            service.albumFiles = [];
+        function getAllPhotosInAlbum(albumId) {
+            service.albumPhotos = [];
 
-            for (var i = 0; i < service.allFiles.length; i++) {
-                var file =  service.allFiles[i];
-                if (file.album_id === parseInt(albumId)) {
-                    service.albumFiles.push(file);
+            for (var i = 0; i < service.allPhotos.length; i++) {
+                var photo =  service.allPhotos[i];
+                if (photo.album_id === parseInt(albumId)) {
+                    service.albumPhotos.push(photo);
                 }
             }
         }

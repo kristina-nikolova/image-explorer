@@ -1,15 +1,15 @@
 <ion-view view-title="Photo Details">
   <ion-content class="padding">
       <div class="photo-wrap">
-          <img ng-src="{{file.url}}" alt="photo" />
+          <img ng-src="{{photo.url}}" alt="photo" />
           <label class="item item-input mtb-11">
               <input type="text"
-                     placeholder="File Name"
-                     ng-model="file.name">
+                     placeholder="Photo Name"
+                     ng-model="photo.name">
           </label>
           <label class="item item-input mtb-11"
                  ng-if="settings.enableNotes">
-              <textarea ng-model="file.note"
+              <textarea ng-model="photo.note"
                         placeholder="Take a note here"></textarea>
           </label>
           <button class="button button-block button-positive"
@@ -18,12 +18,12 @@
               Add to Album
           </button>
           <button class="button button-block button-positive"
-                  ng-click="addPhotoToAlbum(file)"
+                  ng-click="addPhotoToAlbum(photo)"
                   ng-if="isAlbumViewPrevSate">
               Save
           </button>
           <button class="button button-block button-positive"
-                  ng-click="editPhoto(file)"
+                  ng-click="editPhoto(photo)"
                   ng-if="isAlbumInEditMode">
               Save
           </button>

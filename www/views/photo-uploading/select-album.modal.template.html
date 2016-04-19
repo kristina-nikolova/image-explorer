@@ -10,7 +10,7 @@
     <!-- Modal content area -->
     <ion-content>
 
-        <form name="form" id="form" ng-submit="addPhotoToAlbum(file, albums)">
+        <form name="form" id="form" ng-submit="addPhotoToAlbum(photo, albums)">
                 <ion-list>
                     <ion-item ng-repeat="album in albums" class="p-0">
                         <ion-checkbox ng-model="album.isSelected">

@@ -89,6 +89,9 @@
 .photo-wrap {
   width: 100%;
   text-align: center; }
+  .photo-wrap img {
+    width: 300px;
+    height: 300px; }
 
 .photo-location {
   white-space: normal; }

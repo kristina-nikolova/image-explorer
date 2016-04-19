@@ -15,69 +15,54 @@
 
         function init() {
             $scope.album = DatabaseService.getAlbumById($stateParams.albumId);
-            DatabasePhotoTableService.selectAllFilesInAlbum($stateParams.albumId);
+            DatabasePhotoTableService.selectAllPhotosInAlbum($stateParams.albumId);
         }
 
-        $scope.$on('allFilesInAlbum:Loaded', function (event, data) {
-            $scope.files = DatabaseService.albumFiles;
+        $scope.$on('allPhotosInAlbum:Loaded', function (event, data) {
+            $scope.photos = DatabaseService.albumPhotos;
 
         });
 
-        $scope.enterInEditMode = function(){
-            $scope.isAlbumInEditMode = true;
-        }
-
-        $scope.enterInDeleteMode = function(){
-            $scope.isAlbumInDeleteMode = true;
-        }
-
-        $scope.exitFromEditDeleteMode = function(){
-            if($scope.isAlbumInEditMode || $scope.isAlbumInDeleteMode) {
-                $scope.isAlbumInEditMode = false;
-                $scope.isAlbumInDeleteMode = false;
-            }
-        }
-
-        $scope.goToAddFilePage = function(){
+        $scope.goToAddPhotoPage = function(){
             $rootScope.isAlbumViewPrevSate = true;
             $rootScope.currentAlbum = $scope.album;
             $state.go('tab.photo');
         }
 
-        $scope.editPhotoDetails = function(file) {
-            $state.go('tab.photo-details', { file: file });
+        $scope.editPhotoDetails = function(photo) {
+            $state.go('tab.photo-details', { photo: photo });
         };
 
-        $scope.deleteFile = function(file) {
-            DatabasePhotoTableService.deleteFileById(file);
+        $scope.deletePhoto = function(photo) {
+            DatabasePhotoTableService.deletePhotoById(photo);
             return;
         };
 
         ////Photo Slider
 
-        $scope.openFileSliderModal = function(file, files) {
+        $scope.openPhotoSliderModal = function(photo, photos) {
             if(ionic.Platform.isAndroid()) {
                 AndroidFullScreen.immersiveMode();
             }
             $ionicModal.fromTemplateUrl('views/album/photo-slider.modal.template.html', function(modal) {
-                $scope.fileSliderModal = modal;
+                $scope.photoSliderModal = modal;
 
-                $scope.currentSlide = file;
-                files.map(function(item, index){
-                    if (item.id == file.id) {
+                $scope.currentSlide = photo;
+                photos.map(function(item, index){
+                    if (item.id == photo.id) {
                         $scope.currentSlideIndex = index;
                         return;
                     }
                 });
 
-                $scope.fileSliderModal.show();
+                $scope.photoSliderModal.show();
             }, {
                 scope: $scope
             });
         };
 
         $scope.slideHasChanged  = function(index) {
-            $scope.files.map(function(item, i){
+            $scope.photos.map(function(item, i){
                 if (i == index) {
                     $scope.currentSlide = item;
                     return;
@@ -94,26 +79,26 @@
             }
         };
 
-        $scope.closeFileSliderModal = function() {
-            $scope.fileSliderModal.hide();
+        $scope.closePhotoSliderModal = function() {
+            $scope.photoSliderModal.hide();
             if(ionic.Platform.isAndroid()) {
                 AndroidFullScreen.showSystemUI();
             }
         };
 
         $scope.openPhotoInfoModal = function() {
-            $scope.file = $scope.currentSlide;
+            $scope.photo = $scope.currentSlide;
 
             $ionicModal.fromTemplateUrl('views/album/photo-info.modal.template.html', function(modal) {
-                $scope.fileInfoModal = modal;
-                $scope.fileInfoModal.show();
+                $scope.photoInfoModal = modal;
+                $scope.photoInfoModal.show();
             }, {
                 scope: $scope
             });
         };
 
         $scope.closePhotoInfoModal = function() {
-            $scope.fileInfoModal.hide();
+            $scope.photoInfoModal.hide();
         };
 
         $scope.shareToEmail = function() {
@@ -123,7 +108,7 @@
                 toArr = null,
                 ccArr = null,
                 bccArr = null,
-                file = [$scope.file.url];
+                file = [$scope.photo.url];
 
             $cordovaSocialSharing
                 .shareViaEmail(message, subject, toArr, ccArr, bccArr, file)
@@ -137,7 +122,7 @@
         $scope.shareToFacebook = function() {
 
             var message = 'Message via Facebook',
-                image = [$scope.file.url],
+                image = [$scope.photo.url],
                 link = null;
 
             $cordovaSocialSharing
@@ -152,7 +137,7 @@
         $scope.shareToTwitter = function() {
 
             var message = 'Message via Twitter',
-                image = [$scope.file.url],
+                image = [$scope.photo.url],
                 link = null;
 
             $cordovaSocialSharing
@@ -168,7 +153,7 @@
 
             var message = 'Message',
                 subject =  null,
-                file = [$scope.file.url],
+                file = [$scope.photo.url],
                 link = null;
 
             $cordovaSocialSharing

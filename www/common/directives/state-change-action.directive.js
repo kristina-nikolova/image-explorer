@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('directives', [])
+    angular.module('directives')
     .directive("stateChangeAction", function() {
 
        var Ctrl = function($scope, $rootScope) {

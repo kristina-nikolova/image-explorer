@@ -7,7 +7,7 @@
             <i class="icon ion-ios-information-outline light"></i>
         </button>
         <button class="button button-icon slider-btn slider-close-btn"
-                ng-click="closeFileSliderModal()">
+                ng-click="closePhotoSliderModal()">
             <i class="icon ion-close light"></i>
         </button>
 
@@ -15,8 +15,8 @@
                        does-continue="false"
                        active-slide="currentSlideIndex"
                        on-slide-changed="slideHasChanged($index)">
-            <ion-slide ng-repeat="file in files">
-                <h1 class="title">{{file.name}}</h1>
+            <ion-slide ng-repeat="photo in photos">
+                <h1 class="title">{{photo.name}}</h1>
                 <ion-scroll zooming="true"
                             min-zoom="{{zoomMin}}"
                             direction="xy"
@@ -27,7 +27,7 @@
                             delegate-handle="scrollHandle{{$index}}"
                             on-scroll="updateSlideStatus(currentSlideIndex)"
                             on-release="updateSlideStatus(currentSlideIndex)">
-                    <div class="photo-fullsize" style="background-image: url({{file.url}})"></div>
+                    <div class="photo-fullsize" style="background-image: url({{photo.url}})"></div>
                 </ion-scroll>
             </ion-slide>
         </ion-slide-box>

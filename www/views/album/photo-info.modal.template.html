@@ -10,23 +10,22 @@
     <!-- Modal content area -->
     <ion-content>
 
-        <!--TODO: Replace file/image to photo EVERYWHERE!-->
         <div class="list">
             <label class="item item-input item-stacked-label">
                 <span class="input-label bold">Name</span>
-                <div>{{file.name}}</div>
+                <div>{{photo.name}}</div>
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label bold">Location</span>
-                <div class="photo-location">{{file.location}}</div>
+                <div class="photo-location">{{photo.location}}</div>
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label bold">Date/Time</span>
-                <div>{{file.dateCreated | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
+                <div>{{photo.dateCreated | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label bold">Note</span>
-                <div>{{file.note}}</div>
+                <div>{{photo.note}}</div>
             </label>
         </div>
 

@@ -102,7 +102,7 @@ angular.module('imageExplorer', [
       },
       cache: false,
       params: {
-        file: null
+        photo: null
       }
   });
 
