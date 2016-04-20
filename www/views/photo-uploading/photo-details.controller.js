@@ -13,7 +13,9 @@
             url: '',
             note: '',
             location: "",
-            dateCreated: ""
+            dateCreated: "",
+            long: "",
+            lat: ""
         };
         $scope.isPhotoAddedToAlbum = false;
         $scope.isAlbumInEditMode = false;
@@ -37,6 +39,8 @@
         $rootScope.$on('photo:getLocationDone', function() {
             $scope.photo.location = PhotoService._uploadedPhoto.location;
             $scope.photo.dateCreated = PhotoService._uploadedPhoto.dateCreated;
+            $scope.photo.long = PhotoService._uploadedPhoto.long;
+            $scope.photo.lat = PhotoService._uploadedPhoto.lat;
         });
 
         function resetSelectAlbumModal() {

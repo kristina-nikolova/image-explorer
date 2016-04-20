@@ -13,7 +13,9 @@
         service._uploadedPhoto = {
             url: "",
             location: "",
-            dateCreated: ""
+            dateCreated: "",
+            long: "",
+            lat: ""
         };
         service.getUploadedPhoto = getUploadedPhoto;
 
@@ -41,8 +43,7 @@
                                 var long = EXIF.getTag(this, "GPSLongitude");
                                 var lat = EXIF.getTag(this, "GPSLatitude");
                                 if (!long || !lat) {
-                                    service._uploadedPhoto.location = 'No location info';
-                                    $rootScope.$broadcast('photo:getLocationDone');
+                                    hasNoLocation();
                                     return;
                                 }
                                 long = convertDegToDec(long);
@@ -50,23 +51,28 @@
                                 //handle W/S
                                 if (EXIF.getTag(this, "GPSLongitudeRef") === "W") long = -1 * long;
                                 if (EXIF.getTag(this, "GPSLatitudeRef") === "S") lat = -1 * lat;
+                                service._uploadedPhoto.long = long;
+                                service._uploadedPhoto.lat = lat;
                                 locateAddress(long, lat);
                             } else {
                                 var posOptions = {timeout: 10000, enableHighAccuracy: false};
                                 $cordovaGeolocation
                                     .getCurrentPosition(posOptions)
                                     .then(function (position) {
-                                        var lat  = position.coords.latitude
-                                        var long = position.coords.longitude
+                                        var lat  = position.coords.latitude;
+                                        var long = position.coords.longitude;
 
                                         if (!long || !lat) {
-                                            service._uploadedPhoto.location = 'No location info';
-                                            $rootScope.$broadcast('photo:getLocationDone');
+                                            hasNoLocation();
                                             return;
                                         }
 
+                                        service._uploadedPhoto.long = long
+                                        service._uploadedPhoto.lat = lat;
                                         locateAddress(long, lat);
                                     }, function(err) {
+                                        //when gps is turned off
+                                        hasNoLocation();
                                         console.log(err);
                                     });
                             }
@@ -94,6 +100,13 @@
                 }
                 $rootScope.$broadcast('photo:getLocationDone');
             });
+        };
+
+        var hasNoLocation = function() {
+            service._uploadedPhoto.location = 'No location info';
+            service._uploadedPhoto.long = ""
+            service._uploadedPhoto.lat = "";
+            $rootScope.$broadcast('photo:getLocationDone');
         };
 
         return service;

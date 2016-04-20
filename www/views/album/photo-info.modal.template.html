@@ -18,6 +18,9 @@
             <label class="item item-input item-stacked-label">
                 <span class="input-label bold">Location</span>
                 <div class="photo-location">{{photo.location}}</div>
+                <div id="map"
+                     data-tap-disabled="true"
+                        ng-show="photo.lat && photo.long"></div>
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label bold">Date/Time</span>

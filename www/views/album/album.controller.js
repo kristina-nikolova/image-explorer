@@ -81,6 +81,7 @@
 
         $scope.closePhotoSliderModal = function() {
             $scope.photoSliderModal.hide();
+            $scope.photoSliderModal.remove();
             if(ionic.Platform.isAndroid()) {
                 AndroidFullScreen.showSystemUI();
             }
@@ -92,6 +93,9 @@
             $ionicModal.fromTemplateUrl('views/album/photo-info.modal.template.html', function(modal) {
                 $scope.photoInfoModal = modal;
                 $scope.photoInfoModal.show();
+                if($scope.photo.long && $scope.photo.lat){
+                    mapInitialize();
+                }
             }, {
                 scope: $scope
             });
@@ -99,6 +103,7 @@
 
         $scope.closePhotoInfoModal = function() {
             $scope.photoInfoModal.hide();
+            $scope.photoInfoModal.remove();
         };
 
         $scope.shareToEmail = function() {
@@ -163,6 +168,24 @@
                 }, function(err) {
                     console.log(err);
                 });
+        }
+
+        function mapInitialize() {
+            var myLatlng = new google.maps.LatLng($scope.photo.lat, $scope.photo.long);
+
+            var mapOptions = {
+                center: myLatlng,
+                zoom: 16,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById("map"),
+                mapOptions);
+
+            var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map,
+                title: 'Photo Location'
+            });
         }
 
         init();

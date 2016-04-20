@@ -24,14 +24,13 @@
         function createPhotoTable () {
             DatabaseService.db.transaction(function (tx) {
                 //tx.executeSql("DROP TABLE IF EXISTS photo");
-                tx.executeSql("DROP TABLE IF EXISTS file");
-                tx.executeSql("CREATE TABLE IF NOT EXISTS photo (id integer primary key, album_id integer, name text, url text, note text, location text, dateCreated datetime)");
+                tx.executeSql("CREATE TABLE IF NOT EXISTS photo (id integer primary key, album_id integer, name text, url text, note text, location text, dateCreated datetime, long integer, lat integer)");
             });
         }
 
         function insertPhoto(album_id, photo) {
             DatabaseService.db.transaction(function (tx) {
-                tx.executeSql('INSERT INTO photo (album_id, name, url, note, location, dateCreated) VALUES (?, ?, ?, ?, ?, ?)', [album_id, photo.name, photo.url, photo.note, photo.location, photo.dateCreated],
+                tx.executeSql('INSERT INTO photo (album_id, name, url, note, location, dateCreated, long, lat) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [album_id, photo.name, photo.url, photo.note, photo.location, photo.dateCreated, photo.long, photo.lat],
                     function(tx, res) {
                         photo.id = res.insertId;
                         photo.album_id = album_id;
@@ -52,7 +51,7 @@
 
         function updatePhoto(photo) {
             DatabaseService.db.transaction(function (tx) {
-                tx.executeSql('UPDATE photo SET album_id=?, name=?, url=?, note=?, location=?, dateCreated=? WHERE id=?', [photo.album_id, photo.name, photo.url, photo.note, photo.location, photo.dateCreated, photo.id],
+                tx.executeSql('UPDATE photo SET name=?, note=? WHERE id=?', [photo.name, photo.note, photo.id],
                     function(tx, res) {
                         $rootScope.$broadcast('success', 'Successful updated photo');
 
