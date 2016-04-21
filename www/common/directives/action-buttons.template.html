@@ -1,20 +1,22 @@
-<div state-change-action action="exitFromEditDeleteMode()">
+<div state-change-action
+     action="exitFromEditDeleteMode()"
+     class="text-right">
     <button class="button button-icon action-button"
             ng-click="addAction()"
             ng-hide="isInEditMode || isInDeleteMode">
-        <i class="icon ion-plus-circled balanced"></i>
+        <i class="icon ion-plus-circled light"></i>
     </button>
     <button class="button button-icon action-button"
             ng-click="enterInEditMode()"
             ng-hide="isInEditMode || isInDeleteMode">
-        <i class="icon ion-edit balanced"></i>
+        <i class="icon ion-edit light"></i>
     </button>
     <button class="button button-icon action-button"
             ng-click="enterInDeleteMode()"
             ng-hide="isInEditMode || isInDeleteMode || condition">
-        <i class="icon ion-trash-a balanced"></i>
+        <i class="icon ion-trash-a light"></i>
     </button>
-    <button class="button button-clear button-positive"
+    <button class="button button-clear cancel-button"
             ng-click="exitFromEditDeleteMode()"
             ng-if="isInEditMode || isInDeleteMode">Exit
     </button>

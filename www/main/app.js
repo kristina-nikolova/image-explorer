@@ -40,14 +40,14 @@ angular.module('imageExplorer', [
   .state('tab', {
     url: '/tab',
     abstract: true,
-    templateUrl: 'main/tabs.template.html',
+    templateUrl: 'main/menu.template.html',
     controller: 'MainCtrl'
   })
 
   .state('tab.dashboard', {
     url: '/dashboard',
     views: {
-      'tab-dashboard': {
+      'appContent': {
         templateUrl: 'views/dashboard/dashboard.template.html',
         controller: 'DashboardCtrl'
       }
@@ -57,7 +57,7 @@ angular.module('imageExplorer', [
   .state('tab.albums', {
       url: '/albums',
       views: {
-        'tab-albums': {
+        'appContent': {
           templateUrl: 'views/albums/albums.template.html',
           controller: 'AlbumsCtrl'
         }
@@ -66,7 +66,7 @@ angular.module('imageExplorer', [
     .state('tab.album', {
       url: '/albums/:albumId',
       views: {
-        'tab-albums': {
+        'appContent': {
           templateUrl: 'views/album/album.template.html',
           controller: 'AlbumCtrl'
         }
@@ -76,7 +76,7 @@ angular.module('imageExplorer', [
   .state('tab.settings', {
     url: '/settings',
     views: {
-      'tab-settings': {
+      'appContent': {
         templateUrl: 'views/settings/settings.template.html',
         controller: 'SettingsCtrl'
       }
@@ -86,7 +86,7 @@ angular.module('imageExplorer', [
   .state('tab.photo', {
     url: '/photo',
     views: {
-      'tab-photo': {
+      'appContent': {
         templateUrl: 'views/photo-uploading/photo.template.html',
         controller: 'PhotoCtrl'
       }
@@ -95,7 +95,7 @@ angular.module('imageExplorer', [
   .state('tab.photo-details', {
       url: '/photo-details',
       views: {
-          'tab-photo': {
+          'appContent': {
               templateUrl: 'views/photo-uploading/photo-details.template.html',
               controller: 'PhotoDetailsCtrl'
           }

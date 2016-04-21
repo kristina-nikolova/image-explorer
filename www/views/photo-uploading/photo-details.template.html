@@ -12,22 +12,22 @@
               <textarea ng-model="photo.note"
                         placeholder="Take a note here"></textarea>
           </label>
-          <button class="button button-block button-positive"
+          <button class="button button-block primary-button"
                   ng-click="openSelectAlbumModal()"
                   ng-if="!isAlbumViewPrevSate && !isAlbumInEditMode">
               Add to Album
           </button>
-          <button class="button button-block button-positive"
+          <button class="button button-block primary-button"
                   ng-click="addPhotoToAlbum(photo)"
                   ng-if="isAlbumViewPrevSate">
               Save
           </button>
-          <button class="button button-block button-positive"
+          <button class="button button-block primary-button"
                   ng-click="editPhoto(photo)"
                   ng-if="isAlbumInEditMode">
               Save
           </button>
-          <button class="button button-clear button-positive"
+          <button class="button button-clear cancel-button"
                   ng-click="cancelAddingPhotoToAlbum()">Cancel
           </button>
       </div>

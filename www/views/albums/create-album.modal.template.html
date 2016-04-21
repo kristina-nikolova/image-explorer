@@ -6,8 +6,6 @@
             ng-if="!isAlbumInEditMode">Create Album</h1>
         <h1 class="title"
             ng-if="isAlbumInEditMode">Edit Album</h1>
-        <button class="button button-clear button-positive"
-                ng-click="closeCreateEditAlbumModal()">Cancel</button>
     </ion-header-bar>
 
     <!-- Modal content area -->
@@ -38,14 +36,16 @@
             </div>
             <div class="padding">
                 <button type="submit"
-                        class="button button-block button-positive"
+                        class="button button-block primary-button"
                         ng-if="!isAlbumInEditMode"
                         ng-click="createAlbum(newAlbum)">Create Album</button>
                 <button type="submit"
-                        class="button button-block button-positive"
+                        class="button button-block primary-button"
                         ng-if="isAlbumInEditMode"
                         ng-click="editAlbum(album)">Save</button>
             </div>
+            <button class="button button-clear cancel-button w-100"
+                    ng-click="closeCreateEditAlbumModal()">Cancel</button>
         </form>
 
     </ion-content>

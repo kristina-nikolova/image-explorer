@@ -1,4 +1,7 @@
 <ion-view view-title="Photos">
+    <ion-nav-buttons side="left">
+        <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+    </ion-nav-buttons>
   <ion-content class="padding">
       <success-msg message="success"
                    ng-if="success">
@@ -6,13 +9,19 @@
       <error-msg message="error"
                  ng-if="error">
       </error-msg>
-      <button class="button button-block button-positive"
-              ng-click="takePhoto()">
-          Take Photo
-      </button>
-      <button class="button button-block button-positive"
-              ng-click="choosePhoto()">
-          Choose Photo
-      </button>
+      <div class="add-photo-button-wrap">
+          <div class="add-photo-button"
+                  ng-click="takePhoto()">
+              <i class="icon ion-camera"></i>
+              <div>Take Photo</div>
+          </div>
+      </div>
+      <div class="add-photo-button-wrap">
+          <div class="add-photo-button"
+               ng-click="choosePhoto()">
+              <i class="icon ion-images"></i>
+              <div>Choose Photo</div>
+          </div>
+      </div>
 </ion-content>
 </ion-view>

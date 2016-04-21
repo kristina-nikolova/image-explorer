@@ -1,10 +1,8 @@
-.photo.card {
-  width: 150px;
-  height: 150px;
-  margin-right: 10px;
-  margin-left: 10px;
+.item.card {
+  margin: 1px;
   position: relative;
   float: left;
+  padding: 0;
 
   .item-image {
     padding: 0;
@@ -27,4 +25,32 @@
   top: 0;
   right: 0;
   pointer-events: initial;
+}
+
+.album {
+  .item.card {
+    width: 160px;
+    height: 160px;
+
+    .item-image {
+      height: calc(100% - 45px);
+
+      .icon {
+        font-size: 80px;
+        line-height: 115px;
+      }
+    }
+
+    .item-divider {
+      max-height: 45px;
+      padding-top: 2px;
+    }
+  }
+}
+
+.photo {
+  .item.card {
+    width: 110px;
+    height: 110px;
+  }
 }

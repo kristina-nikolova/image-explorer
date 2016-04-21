@@ -14,15 +14,16 @@
 
       <div class="clear"></div>
 
-      <photo ng-repeat="photo in photos"
-             photo="photo"
-             photos="photos"
+      <item ng-repeat="photo in photos"
+            class="photo"
+             item="photo"
+             items="photos"
              is-in-edit-mode="isAlbumInEditMode"
              is-in-delete-mode="isAlbumInDeleteMode"
-             edit-photo-action="editPhotoDetails(photo)"
-             delete-photo-action="deletePhoto(photo)"
-             open-photo-action="openPhotoSliderModal(photo, photos)">
-      </photo>
+             edit-item-action="editPhotoDetails(photo)"
+             delete-item-action="deletePhoto(photo)"
+             open-item-action="openPhotoSliderModal(photo, photos)">
+      </item>
 
   </ion-content>
 </ion-view>

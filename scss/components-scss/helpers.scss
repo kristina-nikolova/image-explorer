@@ -14,12 +14,20 @@
     text-align: center;
 }
 
+.text-right {
+  text-align: right;
+}
+
 .bold {
     font-weight: bold;
 }
 
 .not-clickable {
     pointer-events: none;
+}
+
+.w-100 {
+  width: 100%;
 }
 
 .w-h-100 {
@@ -37,16 +45,4 @@
 
 .border-0 {
     border: none;
-}
-
-.action-button {
-    margin: 0 10px;
-}
-
-.success-msg {
-    color: green;
-}
-
-.error-msg {
-    color: red;
 }

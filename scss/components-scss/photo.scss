@@ -1,3 +1,21 @@
+.add-photo-button-wrap {
+  height: 50%;
+
+  .add-photo-button {
+    color: #fff;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    position: relative;
+    top: 50%;
+    left: 50%;
+    vertical-align: middle;
+
+    .icon:before {
+      font-size: 60px;
+    }
+  }
+}
+
 .photo-wrap {
   width: 100%;
   text-align: center;
@@ -9,14 +27,20 @@
 }
 
 ////Detail info
-.photo-location {
-  white-space: normal;
-}
+.photo-info {
+  .item-input, .input-label {
+    color: #fff;
+  }
 
-#map {
-  height: 200px;
-}
+  .photo-location {
+    white-space: normal;
+  }
 
-.social-bar {
-  padding: 0 10px;
+  #map {
+    height: 200px;
+  }
+
+  .social-bar {
+    padding: 0 10px;
+  }
 }

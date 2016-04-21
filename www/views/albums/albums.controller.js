@@ -4,9 +4,9 @@
     angular.module('albums', [])
         .controller('AlbumsCtrl', AlbumsCtrl)
 
-    AlbumsCtrl.$inject = ['$scope', '$timeout', '$ionicModal', 'DatabaseService', 'DatabaseAlbumTableService'];
+    AlbumsCtrl.$inject = ['$scope', '$state', '$timeout', '$ionicModal', 'DatabaseService', 'DatabaseAlbumTableService'];
 
-    function AlbumsCtrl ($scope, $timeout, $ionicModal, DatabaseService, DatabaseAlbumTableService) {
+    function AlbumsCtrl ($scope, $state, $timeout, $ionicModal, DatabaseService, DatabaseAlbumTableService) {
 
         $scope.isAlbumCreated = false;
         $scope.isAlbumInDeleteMode = false;
@@ -68,6 +68,10 @@
         $scope.deleteAlbum = function(album) {
             DatabaseAlbumTableService.deleteAlbumById(album);
         };
+
+        $scope.openAlbum = function(album) {
+            $state.go('tab.album', { albumId: album.id });
+        }
 
         init();
     }
