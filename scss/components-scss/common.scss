@@ -14,16 +14,13 @@
   }
 }
 
+.title.header-item {
+  margin-left: 0;
+}
+
 .pane,
 .modal {
   background-color: $black;
-}
-
-.modal {
-  .bar .title {
-    text-align: center;
-    right: 0!important;
-  }
 }
 
 .dashboards {
@@ -63,4 +60,8 @@
 .checkbox input:checked + .checkbox-icon:before {
   background: $dark-green;
   border-color: $dark-green;
+}
+
+.button-icon .icon:before {
+  font-size: 26px;
 }

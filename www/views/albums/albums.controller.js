@@ -8,6 +8,7 @@
 
     function AlbumsCtrl ($scope, $state, $timeout, $ionicModal, DatabaseService, DatabaseAlbumTableService) {
 
+        var selectedAlbums = [];
         $scope.isAlbumCreated = false;
         $scope.isAlbumInDeleteMode = false;
         $scope.isAlbumInEditMode = false;
@@ -25,12 +26,29 @@
             });
         }
 
+        $scope.$on('editMode:exit', function () {
+            selectedAlbums = [];
+            $scope.albums.forEach(function(album){
+                album.isSelected = false;
+            });
+        });
+
         function resetCreateEditAlbumModal() {
             $scope.newAlbum = {
                 name: "",
                 description: ""
             }
         };
+
+        $scope.onItemClicked = function(album, isAlbumInEditMode, isAlbumInDeleteMode) {
+            if(isAlbumInEditMode) {
+                $scope.openCreateEditAlbumModal(album);
+            } else if(isAlbumInDeleteMode) {
+                selectAlbum(album);
+            } else {
+                openAlbum(album);
+            }
+        }
 
         $scope.openCreateEditAlbumModal = function(album) {
             if(album) {
@@ -46,6 +64,10 @@
         $scope.closeCreateEditAlbumModal = function() {
             $scope.createEditAlbumModal.hide();
             resetCreateEditAlbumModal();
+
+            $timeout(function(){
+                $scope.isAlbumInEditMode = false;
+            }, 100);
         };
 
         $scope.createAlbum = function(newAlbum) {
@@ -58,19 +80,31 @@
 
         $scope.editAlbum = function(album) {
             DatabaseAlbumTableService.updateAlbum(album);
-            $scope.isAlbumInEditMode = false;
 
             $timeout(function(){
                 $scope.closeCreateEditAlbumModal();
             }, 1000);
         };
 
-        $scope.deleteAlbum = function(album) {
-            DatabaseAlbumTableService.deleteAlbumById(album);
+        $scope.deleteAlbums  = function() {
+            if(selectedAlbums.length) {
+                DatabaseAlbumTableService.deleteAlbums(selectedAlbums);
+                return;
+            }
         };
 
-        $scope.openAlbum = function(album) {
-            $state.go('tab.album', { albumId: album.id });
+        function selectAlbum(album) {
+            if(!album.isSelected) {
+                selectedAlbums.push(album);
+                album.isSelected = true;
+            } else {
+                album.isSelected = false;
+                selectedAlbums.splice(selectedAlbums.indexOf(album), 1);
+            }
+        };
+
+        function openAlbum(album) {
+            $state.go('app.album', { albumId: album.id });
         }
 
         init();

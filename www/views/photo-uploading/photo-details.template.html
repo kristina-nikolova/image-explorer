@@ -1,7 +1,13 @@
 <ion-view view-title="Photo Details">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon"
+                ui-sref="app.photo">
+            <i class="icon ion-chevron-left"></i>
+        </button>
+    </ion-nav-buttons>
   <ion-content class="padding">
-      <div class="photo-wrap">
-          <img ng-src="{{photo.url}}" alt="photo" />
+      <div class="photo-wrap animated fadeIn">
+          <img class="animated zoomIn" ng-src="{{photo.url}}" alt="photo" />
           <label class="item item-input mtb-11">
               <input type="text"
                      placeholder="Photo Name"

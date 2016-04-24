@@ -29,7 +29,7 @@ angular.module('imageExplorer', [
 })
 
 .config(function($compileProvider){
-    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel|blob|cdvfile|content):|data:image\//);
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -37,14 +37,14 @@ angular.module('imageExplorer', [
   $stateProvider
 
   // setup an abstract state for the tabs directive
-  .state('tab', {
-    url: '/tab',
+  .state('app', {
+    url: '/app',
     abstract: true,
     templateUrl: 'main/menu.template.html',
     controller: 'MainCtrl'
   })
 
-  .state('tab.dashboard', {
+  .state('app.dashboard', {
     url: '/dashboard',
     views: {
       'appContent': {
@@ -54,7 +54,7 @@ angular.module('imageExplorer', [
     }
   })
 
-  .state('tab.albums', {
+  .state('app.albums', {
       url: '/albums',
       views: {
         'appContent': {
@@ -63,7 +63,7 @@ angular.module('imageExplorer', [
         }
       }
     })
-    .state('tab.album', {
+    .state('app.album', {
       url: '/albums/:albumId',
       views: {
         'appContent': {
@@ -73,7 +73,7 @@ angular.module('imageExplorer', [
       }
     })
 
-  .state('tab.settings', {
+  .state('app.settings', {
     url: '/settings',
     views: {
       'appContent': {
@@ -83,7 +83,7 @@ angular.module('imageExplorer', [
     }
   })
   
-  .state('tab.photo', {
+  .state('app.photo', {
     url: '/photo',
     views: {
       'appContent': {
@@ -92,7 +92,7 @@ angular.module('imageExplorer', [
       }
     }
   })
-  .state('tab.photo-details', {
+  .state('app.photo-details', {
       url: '/photo-details',
       views: {
           'appContent': {
@@ -107,6 +107,6 @@ angular.module('imageExplorer', [
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dashboard');
+  $urlRouterProvider.otherwise('/app/dashboard');
 
 });

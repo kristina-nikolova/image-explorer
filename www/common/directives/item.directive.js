@@ -11,9 +11,7 @@
                 items: '=',
                 isInEditMode: '=',
                 isInDeleteMode: '=',
-                editItemAction: '&',
-                deleteItemAction: '&',
-                openItemAction: '&'
+                onItemClicked: '&'
             },
             templateUrl: "common/directives/item.template.html"
         };

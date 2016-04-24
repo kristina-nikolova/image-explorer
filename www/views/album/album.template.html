@@ -1,4 +1,10 @@
 <ion-view view-title="{{album.name}}">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon"
+                ui-sref="app.albums">
+            <i class="icon ion-chevron-left"></i>
+        </button>
+    </ion-nav-buttons>
   <ion-content class="padding">
       <success-msg message="success"
                    ng-if="success">
@@ -9,7 +15,8 @@
       <action-buttons add-action="goToAddPhotoPage()"
                       is-in-edit-mode="isAlbumInEditMode"
                       is-in-delete-mode="isAlbumInDeleteMode"
-                      condition="photos.length == 0">
+                      condition="photos.length == 0"
+                      on-delete-button-clicked="deletePhotos()">
       </action-buttons>
 
       <div class="clear"></div>
@@ -20,9 +27,7 @@
              items="photos"
              is-in-edit-mode="isAlbumInEditMode"
              is-in-delete-mode="isAlbumInDeleteMode"
-             edit-item-action="editPhotoDetails(photo)"
-             delete-item-action="deletePhoto(photo)"
-             open-item-action="openPhotoSliderModal(photo, photos)">
+             on-item-clicked="onItemClicked(photo, photos, isAlbumInEditMode, isAlbumInDeleteMode)">
       </item>
 
   </ion-content>

@@ -15,7 +15,7 @@
   }
 
   .item-divider {
-    max-height: 33px;
+    height: 33px;
   }
 }
 
@@ -25,6 +25,10 @@
   top: 0;
   right: 0;
   pointer-events: initial;
+
+  .icon:before {
+    color: $dark-green;
+  }
 }
 
 .album {
@@ -42,7 +46,7 @@
     }
 
     .item-divider {
-      max-height: 45px;
+      height: 45px;
       padding-top: 2px;
     }
   }

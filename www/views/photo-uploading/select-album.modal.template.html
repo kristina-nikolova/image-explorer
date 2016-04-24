@@ -9,15 +9,14 @@
     <ion-content>
 
         <form name="form" id="form" ng-submit="addPhotoToAlbum(photo, albums)">
-                <ion-list>
-                    <ion-item ng-repeat="album in albums" class="p-0">
-                        <ion-checkbox ng-model="album.isSelected">
-                            <h2>{{album.name}}</h2>
-                            <p>{{album.description}}</p>
-                        </ion-checkbox>
-                    </ion-item>
-                </ion-list>
-            <!--</div>-->
+            <ion-list class="animated fadeIn">
+                <ion-item ng-repeat="album in albums" class="p-0">
+                    <ion-checkbox ng-model="album.isSelected">
+                        <h2>{{album.name}}</h2>
+                        <p>{{album.description}}</p>
+                    </ion-checkbox>
+                </ion-item>
+            </ion-list>
             <div class="padding">
                 <button type="submit" class="button button-block primary-button">Save</button>
             </div>

@@ -4,10 +4,11 @@
     angular.module('album', [])
         .controller('AlbumCtrl', AlbumCtrl)
 
-    AlbumCtrl.$inject = ['$rootScope', '$scope', '$state', '$stateParams', '$ionicModal', 'DatabaseService', 'DatabasePhotoTableService', '$ionicSlideBoxDelegate', '$ionicScrollDelegate', '$cordovaSocialSharing'];
+    AlbumCtrl.$inject = ['$rootScope', '$scope', '$state', '$timeout', '$stateParams', '$ionicModal', 'DatabaseService', 'DatabasePhotoTableService', '$ionicSlideBoxDelegate', '$ionicScrollDelegate', '$cordovaSocialSharing'];
 
-    function AlbumCtrl ($rootScope, $scope, $state, $stateParams, $ionicModal, DatabaseService, DatabasePhotoTableService, $ionicSlideBoxDelegate, $ionicScrollDelegate, $cordovaSocialSharing) {
+    function AlbumCtrl ($rootScope, $scope, $state, $timeout, $stateParams, $ionicModal, DatabaseService, DatabasePhotoTableService, $ionicSlideBoxDelegate, $ionicScrollDelegate, $cordovaSocialSharing) {
 
+        var selectedPhotos = [];
         $scope.isAlbumInEditMode = false;
         $scope.isAlbumInDeleteMode = false;
         $scope.currentSlideIndex = 0;
@@ -23,42 +24,74 @@
 
         });
 
+        $scope.$on('editMode:exit', function () {
+            selectedPhotos = [];
+            $scope.photos.forEach(function(photo){
+                photo.isSelected = false;
+            });
+        });
+
+
         $scope.goToAddPhotoPage = function(){
             $rootScope.isAlbumViewPrevSate = true;
             $rootScope.currentAlbum = $scope.album;
-            $state.go('tab.photo');
+            $state.go('app.photo');
         }
 
-        $scope.editPhotoDetails = function(photo) {
-            $state.go('tab.photo-details', { photo: photo });
+        $scope.onItemClicked = function(photo, photos, isAlbumInEditMode, isAlbumInDeleteMode) {
+            if(isAlbumInEditMode) {
+                editPhotoDetails(photo);
+            } else if(isAlbumInDeleteMode) {
+                selectPhoto(photo);
+            } else {
+                openPhotoSliderModal(photo, photos);
+            }
+        }
+
+        $scope.deletePhotos  = function() {
+            if(selectedPhotos.length) {
+                DatabasePhotoTableService.deletePhotos(selectedPhotos);
+                return;
+            }
         };
 
-        $scope.deletePhoto = function(photo) {
-            DatabasePhotoTableService.deletePhotoById(photo);
-            return;
+        function selectPhoto(photo) {
+            if(!photo.isSelected) {
+                selectedPhotos.push(photo);
+                photo.isSelected = true;
+            } else {
+                photo.isSelected = false;
+                selectedPhotos.splice(selectedPhotos.indexOf(photo), 1);
+            }
+        };
+
+        function editPhotoDetails(photo) {
+            $state.go('app.photo-details', { photo: photo });
         };
 
         ////Photo Slider
 
-        $scope.openPhotoSliderModal = function(photo, photos) {
+        function openPhotoSliderModal(photo, photos) {
             if(ionic.Platform.isAndroid()) {
                 AndroidFullScreen.immersiveMode();
             }
-            $ionicModal.fromTemplateUrl('views/album/photo-slider.modal.template.html', function(modal) {
-                $scope.photoSliderModal = modal;
+            $timeout(function(){
+                $ionicModal.fromTemplateUrl('views/album/photo-slider.modal.template.html', function(modal) {
+                    $scope.photoSliderModal = modal;
 
-                $scope.currentSlide = photo;
-                photos.map(function(item, index){
-                    if (item.id == photo.id) {
-                        $scope.currentSlideIndex = index;
-                        return;
-                    }
+                    $scope.currentSlide = photo;
+                    photos.map(function(item, index){
+                        if (item.id == photo.id) {
+                            $scope.currentSlideIndex = index;
+                            return;
+                        }
+                    });
+
+                    $scope.photoSliderModal.show();
+                }, {
+                    scope: $scope
                 });
-
-                $scope.photoSliderModal.show();
-            }, {
-                scope: $scope
-            });
+            }, 400);
         };
 
         $scope.slideHasChanged  = function(index) {
@@ -82,9 +115,11 @@
         $scope.closePhotoSliderModal = function() {
             $scope.photoSliderModal.hide();
             $scope.photoSliderModal.remove();
-            if(ionic.Platform.isAndroid()) {
-                AndroidFullScreen.showSystemUI();
-            }
+            $timeout(function() {
+                if (ionic.Platform.isAndroid()) {
+                    AndroidFullScreen.showSystemUI();
+                }
+            }, 400);
         };
 
         $scope.openPhotoInfoModal = function() {

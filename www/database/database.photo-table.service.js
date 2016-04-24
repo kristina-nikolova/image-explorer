@@ -13,7 +13,7 @@
         service.createPhotoTable = createPhotoTable;
         service.insertPhoto = insertPhoto;
         service.updatePhoto = updatePhoto;
-        service.deletePhotoById = deletePhotoById;
+        service.deletePhotos = deletePhotos;
         service.selectAllPhotos = selectAllPhotos;
         service.selectAllPhotosInAlbum = selectAllPhotosInAlbum;
 
@@ -54,6 +54,7 @@
                 tx.executeSql('UPDATE photo SET name=?, note=? WHERE id=?', [photo.name, photo.note, photo.id],
                     function(tx, res) {
                         $rootScope.$broadcast('success', 'Successful updated photo');
+                        $rootScope.$broadcast('editDeleteAction:finish');
 
                         //dashboards data
 //                        if (photo.note != "") {
@@ -72,11 +73,18 @@
                 tx.executeSql('DELETE FROM photo WHERE id = ?', [photo.id],
                     function(tx, res) {
                         DatabaseService.deletePhoto(photo);
-                        $rootScope.$broadcast('success', 'Successful deleted from the album');
                     }, function (err) {
                         $rootScope.$broadcast('error', err);
                     });
             });
+        }
+
+        function deletePhotos(photos) {
+            photos.forEach(function(photo){
+                deletePhotoById(photo);
+            });
+            $rootScope.$broadcast('success', 'Successful deleted from the album');
+            $rootScope.$broadcast('editDeleteAction:finish');
         }
 
         function selectAllPhotos()  {

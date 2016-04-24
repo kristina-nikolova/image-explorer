@@ -13,7 +13,7 @@
         service.crateAlbumTable = crateAlbumTable;
         service.insertAlbum = insertAlbum;
         service.updateAlbum = updateAlbum;
-        service.deleteAlbumById = deleteAlbumById;
+        service.deleteAlbums = deleteAlbums;
         service.selectAlbumById = selectAlbumById;
         service.selectAllAlbums = selectAllAlbums;
 
@@ -49,6 +49,7 @@
                 tx.executeSql('UPDATE album SET name=?, description=? WHERE id=?', [album.name, album.description, album.id],
                     function(tx, res) {
                         $rootScope.$broadcast('success', 'Successful edited album');
+                        $rootScope.$broadcast('editDeleteAction:finish');
                     }, function (err) {
                         $rootScope.$broadcast('error', err);
                     });
@@ -60,7 +61,7 @@
                 tx.executeSql('DELETE FROM album WHERE id = ?', [album.id],
                     function(tx, res) {
                         DatabaseService.albums.splice(DatabaseService.albums.indexOf(album), 1);
-                        $rootScope.$broadcast('success', 'Successful deleted album');
+                        //$rootScope.$broadcast('success', 'Successful deleted album');
 
                         //dashboards data
                         $rootScope.albumsCount -= 1;
@@ -69,6 +70,14 @@
                     });
             });
             deleteAllPhotosInAlbum(album.id);
+        }
+
+        function deleteAlbums(albums) {
+            albums.forEach(function(album){
+                deleteAlbumById(album);
+            });
+            $rootScope.$broadcast('success', 'Successful deleted albums');
+            $rootScope.$broadcast('editDeleteAction:finish');
         }
 
         function deleteAllPhotosInAlbum(album_id)  {

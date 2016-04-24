@@ -5,7 +5,7 @@
     .directive("successMsg", function() {
         return {
             restrict : 'E',
-            template : '<div class="success-msg center">{{message}}</div>',
+            template : '<div class="success-msg center animated fadeInDown">{{message}}</div>',
             scope: {
                 message: '='
             }

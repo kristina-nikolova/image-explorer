@@ -21,11 +21,16 @@
 
         function getUploadedPhoto(fromPhotolibrary) {
             CameraService.getPhoto(fromPhotolibrary).then(function(imageURI) {
+                //fix the url when choose photo from the photo library
+//                if (imageURI.substring(0,21)=="content://com.android") {
+//                    var photo_split = imageURI.split("%3A");
+//                    imageURI="content://media/external/images/media/" + photo_split[1];
+//                }
                 service._uploadedPhoto.url = imageURI;
 
                 getPhotoInfo(fromPhotolibrary, imageURI);
 
-                $state.go('tab.photo-details');
+                $state.go('app.photo-details');
             }, function(err) {
                 console.log(err);
             });

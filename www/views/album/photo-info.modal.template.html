@@ -1,16 +1,19 @@
 <div class="modal photo-info">
 
     <!-- Modal header bar -->
-    <ion-header-bar class="bar-secondary">
+    <ion-header-bar class="bar-secondary bar-stable">
+        <button class="button button-clear"
+                ng-click="closePhotoInfoModal()">
+            <i class="icon ion-chevron-left"></i>
+        </button>
         <h1 class="title">Photo Info</h1>
-        <button class="button button-clear cancel-button"
-                ng-click="closePhotoInfoModal()">Cancel</button>
+
     </ion-header-bar>
 
     <!-- Modal content area -->
     <ion-content>
 
-        <div class="list">
+        <div class="list animated fadeIn">
             <label class="item item-input item-stacked-label">
                 <span class="input-label bold">Name</span>
                 <div>{{photo.name}}</div>

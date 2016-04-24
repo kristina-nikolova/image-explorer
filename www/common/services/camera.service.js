@@ -18,9 +18,10 @@
                 quality: 75,
                 sourceType: fromPhotolibrary ? navigator.camera.PictureSourceType.PHOTOLIBRARY : navigator.camera.PictureSourceType.CAMERA,
                 encodingType: navigator.camera.EncodingType.JPEG,
-                targetWidth: 300,
-                targetHeight: 300,
-                saveToPhotoAlbum: true
+                targetWidth: 1000,
+                targetHeight: 1000,
+                saveToPhotoAlbum: true,
+                destinationType: Camera.DestinationType.FILE_URI
             };
 
             navigator.camera.getPicture(

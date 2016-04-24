@@ -1,17 +1,10 @@
-<div class="card item"
-     ng-class="{ 'not-clickable' : isInEditMode || isInDeleteMode }">
+<div class="card item animated zoomIn">
     <button class="button button-icon delete-button"
-            ng-click="editItemAction(item)"
-            ng-if="isInEditMode">
-        <i class="icon ion-edit balanced"></i>
-    </button>
-    <button class="button button-icon delete-button"
-            ng-click="deleteItemAction(item)"
-            ng-if="isInDeleteMode">
-        <i class="icon ion-android-remove-circle assertive"></i>
+            ng-if="isInDeleteMode && item.isSelected">
+        <i class="icon ion-ios-checkmark light"></i>
     </button>
     <div class="w-h-100"
-         ng-click="openItemAction(item, items)">
+         ng-click="onItemClicked(item, items)">
         <div class="item item-image"
              ng-if="item.url"
              style="background-image: url({{item.url}})"></div>

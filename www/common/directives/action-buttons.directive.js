@@ -6,6 +6,10 @@
 
        var Ctrl = function($scope, $rootScope) {
 
+           $scope.$on('editDeleteAction:finish', function () {
+               $scope.exitFromEditDeleteMode();
+           });
+
            $scope.enterInEditMode = function(){
                $scope.isInEditMode = true;
            }
@@ -18,6 +22,7 @@
                if($scope.isInEditMode || $scope.isInDeleteMode) {
                    $scope.isInDeleteMode = false;
                    $scope.isInEditMode = false;
+                   $rootScope.$broadcast('editMode:exit');
                }
            }
         }
@@ -29,7 +34,8 @@
                 isInEditMode: '=',
                 isInDeleteMode: '=',
                 condition: '=',
-                items: '='
+                items: '=',
+                onDeleteButtonClicked: '&'
             },
             templateUrl: "common/directives/action-buttons.template.html",
             controller: Ctrl

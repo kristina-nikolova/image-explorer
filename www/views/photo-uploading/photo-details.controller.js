@@ -53,12 +53,14 @@
         function resetAddPhotoToAlbumForm() {
 
             if($rootScope.isAlbumViewPrevSate) {
-                $rootScope.isAlbumViewPrevSate = false;
+                $timeout(function(){
+                    $rootScope.isAlbumViewPrevSate = false;
+                    $scope.isAlbumInEditMode = false;
+                }, 100);
                 if($rootScope.currentAlbum) {
                     delete $rootScope.currentAlbum;
                 }
             }
-            $ionicTabsDelegate.select(1);
         };
 
         $scope.openSelectAlbumModal = function() {
@@ -83,7 +85,7 @@
 
                 //TODO: try with one interval
                 $timeout(function(){
-                    $state.go('tab.album', { albumId: albumId });
+                    $state.go('app.album', { albumId: albumId });
                 }, 1001);
 
                 return;
@@ -99,7 +101,7 @@
             $timeout(function(){
                 $scope.isPhotoAddedToAlbum = false;
                 $scope.closeSelectAlbumModal();
-                $state.go('tab.photo');
+                $state.go('app.photo');
             }, 1000);
         };
 
@@ -110,7 +112,11 @@
                     delete $rootScope.currentAlbum;
                 }
             }
-            $state.go('tab.photo');
+            if ($stateParams.photo) {
+                $state.go('app.album', { albumId: $scope.photo.album_id });
+            } else {
+                $state.go('app.photo');
+            }
         }
 
         $scope.editPhoto = function(photo) {
@@ -121,8 +127,7 @@
             }, 1000);
 
             $timeout(function(){
-                $state.go('tab.album', { albumId: photo.album_id });
-                $scope.isAlbumInEditMode = false;
+                $state.go('app.album', { albumId: photo.album_id });
             }, 1001);
         }
 
