@@ -5,6 +5,7 @@
     .directive("actionButtons", function() {
 
        var Ctrl = function($scope, $rootScope) {
+           $scope.isConfirmationDilogShown = false;
 
            $scope.$on('editDeleteAction:finish', function () {
                $scope.exitFromEditDeleteMode();
@@ -25,7 +26,16 @@
                    $rootScope.$broadcast('editMode:exit');
                }
            }
-        }
+
+           $scope.showConfirmationDialog = function() {
+               $scope.isConfirmationDilogShown = true;
+           }
+
+           $scope.hideConfirmationDialog = function() {
+               $scope.isConfirmationDilogShown = false;
+           }
+       }
+
 
         return {
             restrict: 'E',

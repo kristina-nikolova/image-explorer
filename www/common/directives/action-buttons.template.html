@@ -18,9 +18,20 @@
         </button>
     </span>
 
+    <div class="confirmation-dialog"
+         ng-if="isConfirmationDilogShown"
+         ng-click="hideConfirmationDialog();onDeleteButtonClicked()"
+         click-outside="hideConfirmationDialog()">
+        <img src="assets/img/open-trash-icon.png"
+             alt="open trash"
+             class="open-trash-icon valign-center"/>
+        <span class="valign-center">Delete selected</span>
+    </div>
+
     <span ng-show="isInDeleteMode">
          <button class="button button-icon action-button"
-                 ng-click="onDeleteButtonClicked()">
+                 id="not-close-on-click"
+                 ng-click="showConfirmationDialog()">
              <i class="icon ion-trash-a light"></i>
          </button>
     </span>
