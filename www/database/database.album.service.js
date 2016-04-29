@@ -72,17 +72,25 @@
 
             DatabaseService.getAllPhotosInAlbum(album_id);
             var albumPhotos = angular.copy(DatabaseService.albumPhotos);
+
             if(albumPhotos.length) {
+                DatabaseService.pouchdb.query(DatabaseService.mapAlbumIDFunction, {
+                    key: album_id,
+                    include_docs : true
+                }).then(function (res) {
+                    if(res.rows && res.rows.length > 0) {
+                        for (var i = 0; i < res.rows.length; i++) {
+                            var doc = res.rows[i].doc;
+                            DatabaseService.pouchdb.remove(doc);
+                        }
+                    }
+                }).catch(function (err) {
+                    $rootScope.$broadcast('error', err);
+                });
+
                 for (var i = 0; i < albumPhotos.length; i++) {
                     var photo = albumPhotos[i];
-
-                    DatabaseService.pouchdb.query(DatabaseService.mapAlbumIDFunction, {
-                        key: album_id
-                    }).then(function (res) {
-                        DatabaseService.deletePhoto(photo);
-                    }).catch(function (err) {
-                        $rootScope.$broadcast('error', err);
-                    });
+                    DatabaseService.deletePhoto(photo);
                 }
             }
         }
