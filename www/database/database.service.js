@@ -63,7 +63,7 @@
 
             for (var i = 0; i < service.allPhotos.length; i++) {
                 var photo =  service.allPhotos[i];
-                if (photo.album_id === parseInt(albumId)) {
+                if (photo.album_id === albumId) {
                     service.albumPhotos.push(photo);
                 }
             }

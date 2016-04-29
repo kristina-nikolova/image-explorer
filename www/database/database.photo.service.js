@@ -27,11 +27,11 @@
                 location: photo.location,
                 dateCreated: photo.dateCreated,
                 long: photo.long,
-                lat: photo.lat
+                lat: photo.lat,
+                dateAdded: new Date().getTime()
             }).then(function (res) {
                 photo.album_id = album_id;
                 photo.id = res.id;
-                photo.rev = res.rev;
                 DatabaseService.albumPhotos.push(photo);
                 DatabaseService.allPhotos.push(photo);
                 $rootScope.$broadcast('success', 'Successful added to the album');
@@ -60,7 +60,8 @@
         }
 
         function deletePhotoById(photo) {
-            DatabaseService.pouchdb.remove(photo.id, photo.rev).then(function (res) {
+            DatabaseService.pouchdb.get(photo.id).then(function (res) {
+                DatabaseService.pouchdb.remove(res);
                 DatabaseService.deletePhoto(photo);
             }).catch(function(err){
                 $rootScope.$broadcast('error', err);
@@ -77,23 +78,20 @@
 
         function selectAllPhotos()  {
             DatabaseService.pouchdb.query(DatabaseService.mapTypeFunction, {
-                key : 'photo'
+                key : 'photo',
+                include_docs : true
             }).then(function (res) {
                 var array = [];
                 DatabaseService.allPhotos = [];
 
                 if(res.rows && res.rows.length > 0) {
                     for(var i=0; i<res.rows.length; i++){
-                        DatabaseService.pouchdb.get(res.rows[i].id).then(function (doc) {
+                        var doc = res.rows[i].doc;
                             doc.id = doc._id;
                             array.push(doc);
-
-                            DatabaseService.allPhotos = array;
-                            $rootScope.$broadcast('allPhotos:Loaded', array);
-                        }).catch(function (err) {
-                            console.log(err);
-                        });
                     }
+                    DatabaseService.allPhotos = array;
+                    $rootScope.$broadcast('allPhotos:Loaded', array);
                 } else {
                     $rootScope.$broadcast('allPhotos:Loaded', array);
                 }
@@ -104,24 +102,20 @@
 
         function selectAllPhotosInAlbum(album_id)  {
             DatabaseService.pouchdb.query(DatabaseService.mapAlbumIDFunction, {
-                key: album_id
+                key: album_id,
+                include_docs : true
             }).then(function (res) {
                 var array = [];
                 DatabaseService.albumPhotos = [];
 
                 if(res.rows && res.rows.length > 0) {
                     for(var i=0; i<res.rows.length; i++){
-                        DatabaseService.pouchdb.get(res.rows[i].id).then(function (doc) {
+                        var doc = res.rows[i].doc;
                             doc.id = doc._id;
-                            doc.rev = doc._rev;
                             array.push(doc);
-
-                            DatabaseService.albumPhotos = array;
-                            $rootScope.$broadcast('allPhotosInAlbum:Loaded', array);
-                        }).catch(function (err) {
-                            console.log(err);
-                        });
                     }
+                    DatabaseService.albumPhotos = array;
+                    $rootScope.$broadcast('allPhotosInAlbum:Loaded', array);
                 } else {
                     $rootScope.$broadcast('allPhotosInAlbum:Loaded', array);
                 }

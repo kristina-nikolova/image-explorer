@@ -20,12 +20,11 @@
             DatabaseService.pouchdb.post({
                 type: 'album',
                 name: newAlbum.name,
-                description: newAlbum.description
+                description: newAlbum.description,
+                dateAdded: new Date().getTime()
             }).then(function (res) {
                 newAlbum.id = res.id;
-                newAlbum.rev = res.rev;
                 DatabaseService.albums.push(newAlbum);
-
                 $rootScope.$broadcast('success', 'Successful created album');
 
                 //dashboards data
@@ -36,11 +35,10 @@
         }
 
         function updateAlbum(album) {
-            DatabaseService.pouchdb.get(album.id).then(function (res) {
-                res.name = album.name;
-                res.description = album.description;
-                album.rev = res._rev;
-                DatabaseService.pouchdb.put(res);
+            DatabaseService.pouchdb.get(album.id).then(function (updatedAlbum) {
+                updatedAlbum.name = album.name;
+                updatedAlbum.description = album.description;
+                DatabaseService.pouchdb.put(updatedAlbum);
 
                 $rootScope.$broadcast('success', 'Successful edited album');
                 $rootScope.$broadcast('editDeleteAction:finish');
@@ -50,7 +48,8 @@
         }
 
         function deleteAlbumById(album) {
-            DatabaseService.pouchdb.remove(album.id, album.rev).then(function (res) {
+            DatabaseService.pouchdb.get(album.id).then(function (res) {
+                DatabaseService.pouchdb.remove(res);
                 DatabaseService.albums.splice(DatabaseService.albums.indexOf(album), 1);
                 deleteAllPhotosInAlbum(album.id);
 
@@ -99,30 +98,24 @@
 
         function selectAllAlbums() {
             DatabaseService.pouchdb.query(DatabaseService.mapTypeFunction, {
-                key: 'album'
+                key: 'album',
+                include_docs : true
             }).then(function (res) {
                 var array = [];
 
                 if(res.rows && res.rows.length > 0) {
                     for(var i=0; i<res.rows.length; i++){
-                        DatabaseService.pouchdb.get(res.rows[i].id).then(function (doc) {
+                        var doc = res.rows[i].doc;
                             doc.id = doc._id;
-                            doc.rev = doc._rev;
                             array.push(doc);
-
-                            DatabaseService.albums = array;
-                            $rootScope.$broadcast('allAlbums:Loaded', array);
-                        }).catch(function (err) {
-                            console.log(err);
-                        });
                     }
-
+                    DatabaseService.albums = array;
+                    $rootScope.$broadcast('allAlbums:Loaded', array);
                 } else {
                     $rootScope.$broadcast('allAlbums:Loaded', array);
                 }
             }).catch(function(err) {
                 $rootScope.$broadcast('error', err);
-                console.log(err);
             });
         }
 

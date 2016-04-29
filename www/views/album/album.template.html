@@ -21,7 +21,7 @@
 
       <div class="clear"></div>
 
-      <item ng-repeat="photo in photos"
+      <item ng-repeat="photo in photos | orderBy: 'dateAdded' track by $index"
             class="photo"
              item="photo"
              items="photos"
