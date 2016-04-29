@@ -29,6 +29,9 @@
              is-in-delete-mode="isAlbumInDeleteMode"
              on-item-clicked="onItemClicked(photo, photos, isAlbumInEditMode, isAlbumInDeleteMode)">
       </item>
+      <div ng-if="photos.length == 0"
+           class="empty-msg center">
+          No photos to display</div>
 
   </ion-content>
 </ion-view>

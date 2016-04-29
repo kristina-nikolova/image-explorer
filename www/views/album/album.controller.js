@@ -21,6 +21,7 @@
 
         $scope.$on('allPhotosInAlbum:Loaded', function (event, data) {
             $scope.photos = DatabaseService.albumPhotos;
+            $scope.$applyAsync();
 
         });
 

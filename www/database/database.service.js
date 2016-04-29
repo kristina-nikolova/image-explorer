@@ -10,6 +10,8 @@
 
         var service = {};
 
+        service.mapTypeFunction = mapTypeFunction;
+        service.mapAlbumIDFunction = mapAlbumIDFunction;
         service.deletePhoto = deletePhoto;
         service.getAlbumById = getAlbumById;
         service.getAllPhotosInAlbum = getAllPhotosInAlbum;
@@ -21,8 +23,19 @@
         service.allPhotos = [];
 
         $ionicPlatform.ready(function() {
-            service.db = openDatabase("my.db", "1.0", "Image Explorer DB", 200000);
+            //PouchDB('imageExplorer.db').destroy();
+            service.pouchdb = new PouchDB('imageExplorer.db');
         });
+
+        function mapTypeFunction(doc) {
+            emit(doc.type);
+        }
+
+        function mapAlbumIDFunction(doc) {
+            if (doc.type === 'photo') {
+                emit(doc.album_id);
+            }
+        }
 
         //helper used in album and photo tables
         function deletePhoto(photo) {
@@ -38,7 +51,7 @@
 
         function getAlbumById(albumId) {
             for (var i = 0; i < service.albums.length; i++) {
-                if (service.albums[i].id === parseInt(albumId)) {
+                if (service.albums[i].id === albumId) {
                     return service.albums[i];
                 }
             }
